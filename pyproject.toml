@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "produtor-rural-techagro"
+version = "0.1.0"
+description = "Gerenciamento de Produtores Rurais com Clean Architecture e Django."
+authors = ["Edson Bezerra <edcastanha@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+Django = "^5.0"
+djangorestframework = "^3.15"
+psycopg2-binary = "^2.9"
+python-decouple = "^3.8" # Para gerenciar variáveis de ambiente
+# pydantic = "^2.0" # Opcional, se usar Pydantic para DTOs
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+pytest-django = "^4.8"
+pytest-asyncio = "^0.23"
+pytest-mock = "^3.12"
+ruff = "^0.4"
+black = "^24.4"
+mypy = "^1.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

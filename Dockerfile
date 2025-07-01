@@ -12,7 +12,7 @@ ENV PYTHONPATH=/src \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Copia o entrypoint customizado
-COPY ./entrypoint.sh ./
+COPY ./docker/entrypoint.sh ./
 RUN chmod +x ./entrypoint.sh
 
 # Copia o arquivo de requisitos

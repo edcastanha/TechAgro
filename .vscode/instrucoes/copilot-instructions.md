@@ -14,10 +14,12 @@ Este documento define diretrizes para desenvolvimento de software Python neste p
 
 ## 2. Clean Code
 
-- Use nomes descritivos para variáveis, funções e classes.
+- Use nomes descritivos para variáveis, funções e classes em pt-BR sem acentuação.
 - Escreva funções pequenas e com uma única responsabilidade.
-- Evite duplicação de código.
+- Evite duplicação de código e arquivos desnecessários.
+- Mantenha o código organizado e modularizado.
 - Comente apenas o necessário; o código deve ser autoexplicativo.
+
 - Prefira composição a herança quando possível.
 - Escreva testes automatizados para todas as funcionalidades.
 
@@ -52,9 +54,6 @@ Este documento define diretrizes para desenvolvimento de software Python neste p
 |   |-- cli
 |       |-- commands
 |       |-- options
-|   |-- web
-|       |-- templates
-|       |-- static
 |-- tests
 |   |-- unit
 |   |-- integration

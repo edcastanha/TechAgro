@@ -13,11 +13,11 @@ services:
     restart: always
 
   api:
-    build: .
+    build: ./docker/
     depends_on:
       - db
     env_file:
-      - ./infra/.env.exemplo
+      - ./docker/.env.exemplo
     restart: always
     working_dir: /src
     deploy:
@@ -28,16 +28,6 @@ services:
       timeout: 5s
       retries: 5
     
-  nginx:
-    image: nginx:latest
-    ports:
-      - "9000:80"
-    volumes:
-      - ./infra/nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - api
-    restart: always
-
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -47,7 +37,7 @@ services:
       - "5050:80"
     restart: always
     volumes:
-      - ./infra/pgadmin_connection.json:/pgadmin4/servers.json
+      - ./docker/pgadmin_connection.json:/pgadmin4/servers.json
 
 volumes:
   pgdata:
