@@ -12,6 +12,7 @@ djangorestframework = "^3.15"
 psycopg2-binary = "^2.9"
 python-decouple = "^3.8" # Para gerenciar variáveis de ambiente
 # pydantic = "^2.0" # Opcional, se usar Pydantic para DTOs
+gunicorn = "^23.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0"
