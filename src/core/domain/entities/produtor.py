@@ -1,55 +1,61 @@
+# src/core/domain/entities/produtor.py (AJUSTADO)
+
 import uuid
 from dataclasses import dataclass, field
 from typing import Union, List, Optional
-from src.core.domain.entities.responsavel_legal import Pessoa, Empresa
+from src.core.domain.entities.responsavel_legal import ResponsavelLegal
 from src.core.domain.exceptions.exceptions import ErroValidacaoProdutor
 
 @dataclass(eq=False)
 class Produtor:
     """
     Entidade Produtor Rural. Representa o papel de um produtor,
-    que pode ser uma Pessoa Física ou uma Pessoa Jurídica (Empresa).
+    associado a um Responsável Legal (Pessoa Física ou Jurídica).
     É a raiz de um Agregado.
     """
     id: str = field(default_factory=lambda: str(uuid.uuid4()), init=False,
                     metadata={'description': 'Identificador único do Produtor.'})
-    # O Produtor pode ser uma Pessoa ou uma Empresa, mas não ambos.
-    pessoa: Optional[Pessoa] = field(default=None,
-                                     metadata={'description': 'Pessoa Física associada ao produtor.'})
-    empresa: Optional[Empresa] = field(default=None,
-                                      metadata={'description': 'Empresa associada ao produtor.'})
+    # O Produtor é associado a um único ResponsávelLegal (Pessoa ou Empresa)
+    responsavel_legal: ResponsavelLegal = field(metadata={'description': 'O responsável legal pelo produtor.'})
+    ativo: bool = field(default=True, metadata={'description': 'Indica se o produtor está ativo no sistema.'}) # NOVO ATRIBUTO
 
     def __post_init__(self):
         """
         Validações pós-inicialização para a entidade Produtor.
-        Garanta que o produtor seja Pessoa OU Empresa, mas não ambos.
         """
-        # XOR lógico (um DEVE ser True, o outro DEVE ser False)
-        if not ((self.pessoa is not None) ^ (self.empresa is not None)):
-            raise ErroValidacaoProdutor("O produtor deve ser associado a uma Pessoa ou a uma Empresa, mas não a ambos.")
+        if not self.responsavel_legal:
+            raise ErroValidacaoProdutor("O produtor deve ter um responsável legal associado.")
 
     @property
     def nome(self) -> str:
         """
-        Retorna o nome ou razão social do produtor.
+        Retorna o nome ou razão social do responsável legal do produtor.
         """
-        if self.pessoa:
-            return self.pessoa.nome
-        elif self.empresa:
-            return self.empresa.razao_social
-        return "Nome Indefinido" # Caso o post_init falhe por algum motivo, embora não devesse.
+        return self.responsavel_legal.obter_nome_completo_ou_razao_social()
 
     @property
-    def documento(self) -> Union[str, None]:
+    def documento(self) -> str:
         """
-        Retorna o CPF ou CNPJ do produtor.
+        Retorna o valor do documento principal (CPF ou CNPJ) do responsável legal.
         """
-        if self.pessoa and self.pessoa.cpf:
-            return self.pessoa.cpf.valor
-        elif self.empresa and self.empresa.cnpj:
-            return self.empresa.cnpj.valor
-        return None
+        return self.responsavel_legal.obter_documento_principal().valor # Acessa o valor do VO
 
+    def eh_pessoa_fisica(self) -> bool:
+        """Verifica se o produtor é uma pessoa física."""
+        return self.responsavel_legal.eh_pessoa_fisica()
+
+    def eh_pessoa_juridica(self) -> bool:
+        """Verifica se o produtor é uma pessoa jurídica."""
+        return self.responsavel_legal.eh_pessoa_juridica()
+
+    def inativar(self) -> None:
+        """Define o produtor como inativo."""
+        self.ativo = False
+
+    def reativar(self) -> None:
+        """Define o produtor como ativo."""
+        self.ativo = True
+        
     def __eq__(self, other):
         """
         Define a igualdade entre dois Produtores pela sua ID.

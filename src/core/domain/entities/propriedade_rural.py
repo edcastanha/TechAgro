@@ -1,9 +1,9 @@
-# src/core/domain/entities/propriedade_rural.py
+# src/core/domain/entities/propriedade_rural.py (AJUSTADO)
 
 import uuid
 from dataclasses import dataclass, field
 from src.core.domain.value_objects.areas import MedidaArea
-from src.core.domain.value_objects.localizacao import Localizacao
+from src.core.domain.value_objects.endereco import Endereco # Importe o NOVO VO Endereco
 from src.core.domain.exceptions.exceptions import ErroValidacaoPropriedadeRural
 from typing import Optional
 
@@ -16,7 +16,7 @@ class PropriedadeRural:
     id: str = field(default_factory=lambda: str(uuid.uuid4()), init=False,
                     metadata={'description': 'Identificador único da Propriedade Rural.'})
     nome_fazenda: str = field(metadata={'description': 'Nome da fazenda ou propriedade.'})
-    localizacao: Localizacao = field(metadata={'description': 'Objeto de valor de Localização da propriedade.'})
+    endereco: Endereco = field(metadata={'description': 'Objeto de valor de Endereço completo da propriedade.'}) # Agora usa Endereco
     area_total: MedidaArea = field(metadata={'description': 'Área total da propriedade em hectares.'})
     area_agricultavel: MedidaArea = field(metadata={'description': 'Área agricultável da propriedade em hectares.'})
     area_vegetacao: MedidaArea = field(metadata={'description': 'Área de vegetação da propriedade em hectares.'})
@@ -38,7 +38,6 @@ class PropriedadeRural:
             
         if self.area_agricultavel.valor_em_hectares < 0 or self.area_vegetacao.valor_em_hectares < 0:
             raise ErroValidacaoPropriedadeRural("As áreas agricultável e de vegetação não podem ser negativas.")
-
 
     def calcular_area_nao_utilizada(self) -> MedidaArea:
         """

@@ -1,9 +1,9 @@
-# src/core/ports/produtor_repository.py
+# src/core/ports/produtor_repository.py (MANTÉM O MÉTODO SALVAR EXISTENTE)
 
 from abc import ABC, abstractmethod
 from typing import Optional, List
 from src.core.domain.entities.produtor import Produtor
-from src.core.domain.entities.propriedade_rural import PropriedadeRural # Se quiser carregar propriedades junto
+from src.core.domain.entities.propriedade_rural import PropriedadeRural
 
 class IProdutorRepository(ABC):
     """
@@ -15,6 +15,8 @@ class IProdutorRepository(ABC):
     def salvar(self, produtor: Produtor) -> None:
         """
         Salva um novo produtor ou atualiza um existente no repositório.
+        Este método deve ser capaz de persistir alterações no estado do produtor,
+        incluindo seu status 'ativo'.
         """
         pass
 
@@ -28,7 +30,8 @@ class IProdutorRepository(ABC):
     @abstractmethod
     def buscar_todos(self) -> List[Produtor]:
         """
-        Busca todos os produtores registrados.
+        Busca todos os produtores registrados (ativos e inativos).
+        A filtragem por status pode ser feita na camada de aplicação se necessário.
         """
         pass
 
@@ -39,14 +42,11 @@ class IProdutorRepository(ABC):
         """
         pass
 
-    @abstractmethod
-    def deletar(self, produtor_id: str) -> None:
-        """
-        Deleta um produtor pelo seu ID.
-        """
-        pass
+    # Removida a necessidade de um 'deletar' físico. A inativação usa 'salvar'.
+    # @abstractmethod
+    # def deletar(self, produtor_id: str) -> None:
+    #     pass
 
-    # Exemplo de método para carregar agregados (propriedades de um produtor)
     @abstractmethod
     def buscar_propriedades_do_produtor(self, produtor_id: str) -> List[PropriedadeRural]:
         """

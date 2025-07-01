@@ -1,72 +1,36 @@
-# src/core/domain/entities/pessoa_ou_empresa.py
+# src/core/domain/entities/responsavel_legal.py
 
-import uuid
-from dataclasses import dataclass, field
+from abc import ABC, abstractmethod
 from src.core.domain.value_objects.documentos import CPF, CNPJ
-# Não precisamos importar ErroDominio aqui se as validações forem delegadas aos VOs
+from typing import Union, Optional
 
-@dataclass(eq=False) # eq=False: a comparação de igualdade será feita pelo 'id' (identidade)
-class Pessoa:
+class ResponsavelLegal(ABC):
     """
-    Entidade que representa uma Pessoa Física.
+    Classe abstrata que define a interface comum para qualquer entidade que possa
+    assumir o papel de Responsável Legal por um Produtor (Pessoa Física ou Jurídica).
     """
-    id: str = field(default_factory=lambda: str(uuid.uuid4()), init=False,
-                    metadata={'description': 'Identificador único da Pessoa.'})
-    nome: str = field(metadata={'description': 'Nome completo da pessoa.'})
-    cpf: CPF = field(metadata={'description': 'Objeto de valor CPF da pessoa.'})
+    id: str
 
-    def __post_init__(self):
+    @abstractmethod
+    def obter_nome_completo_ou_razao_social(self) -> str:
         """
-        Validações pós-inicialização para a entidade Pessoa.
+        Retorna o nome completo (Pessoa) ou a razão social (Empresa) do responsável legal.
         """
-        if not self.nome or not self.nome.strip():
-            raise ValueError("O nome da pessoa não pode ser vazio.")
-        # A validação do CPF já é feita no construtor do Value Object CPF
+        pass
 
-    def __eq__(self, other):
+    @abstractmethod
+    def obter_documento_principal(self) -> Union[CPF, CNPJ]:
         """
-        Define a igualdade entre duas Pessoas pela sua ID.
+        Retorna o objeto de valor do documento principal (CPF ou CNPJ).
         """
-        if not isinstance(other, Pessoa):
-            return NotImplemented
-        return self.id == other.id
+        pass
+    
+    @abstractmethod
+    def eh_pessoa_fisica(self) -> bool:
+        """Indica se o responsável legal é uma pessoa física."""
+        pass
 
-    def __hash__(self):
-        """
-        Define o hash da Pessoa baseado na sua ID.
-        """
-        return hash(self.id)
-
-@dataclass(eq=False)
-class Empresa:
-    """
-    Entidade que representa uma Pessoa Jurídica (Empresa).
-    """
-    id: str = field(default_factory=lambda: str(uuid.uuid4()), init=False,
-                    metadata={'description': 'Identificador único da Empresa.'})
-    razao_social: str = field(metadata={'description': 'Razão social da empresa.'})
-    cnpj: CNPJ = field(metadata={'description': 'Objeto de valor CNPJ da empresa.'})
-    nome_fantasia: str | None = field(default=None,
-                                    metadata={'description': 'Nome fantasia da empresa (opcional).'})
-
-    def __post_init__(self):
-        """
-        Validações pós-inicialização para a entidade Empresa.
-        """
-        if not self.razao_social or not self.razao_social.strip():
-            raise ValueError("A razão social da empresa não pode ser vazia.")
-        # A validação do CNPJ já é feita no construtor do Value Object CNPJ
-
-    def __eq__(self, other):
-        """
-        Define a igualdade entre duas Empresas pela sua ID.
-        """
-        if not isinstance(other, Empresa):
-            return NotImplemented
-        return self.id == other.id
-
-    def __hash__(self):
-        """
-        Define o hash da Empresa baseado na sua ID.
-        """
-        return hash(self.id)
+    @abstractmethod
+    def eh_pessoa_juridica(self) -> bool:
+        """Indica se o responsável legal é uma pessoa jurídica."""
+        pass
