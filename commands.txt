@@ -1,9 +1,10 @@
 # DJANGO INIT
-python techagro/manage.py makemigrations produtores
-python techagro/manage.py migrate
+python manage.py makemigrations 
+python manage.py collectstatic --noinput
+python manage.py migrate --noinput
 
 # Popular db
-python techagro/manage.py popular_mock
+python manage.py popular_mock
 
 # TESTS
 PYTHONPATH=. pytest --cov=techagro --cov-report=term-missing

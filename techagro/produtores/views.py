@@ -6,7 +6,7 @@ from .serializers import (
     SafraSerializer,
     AtividadeRuralSerializer
 )
-from techagro.helpers.logging_helper import get_logger
+from helpers.logging_helper import get_logger
 
 logger = get_logger()
 

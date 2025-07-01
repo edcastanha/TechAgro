@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from techagro.produtores.models import Produtor, Propriedade, Safra, AtividadeRural
+from produtores.models import Produtor, Propriedade, Safra, AtividadeRural
 from random import randint, choice
 from datetime import date
 
@@ -15,38 +15,61 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS('Criando produtores...'))
         produtores = []
+        # CPFs e CNPJs válidos para mock
+        cpfs_validos = [
+            '12345678909',  # válido
+            '39053344705',  # válido
+            '11144477735'   # válido
+        ]
+        cnpjs_validos = [
+            '11444777000161',  # válido
+            '19131243000197',  # válido
+            '48729147000109'   # válido
+        ]
         for i in range(3):
-            produtor = Produtor.objects.create(
-                documento=f'{randint(10000000000, 99999999999)}',
-                nome=f'Produtor {i+1}'
-            )
+            if i % 2 == 0:
+                produtor = Produtor.objects.create(
+                    documento=cpfs_validos[i],
+                    nome=f'Produtor {i+1} (CPF)'
+                )
+            else:
+                produtor = Produtor.objects.create(
+                    documento=cnpjs_validos[i],
+                    nome=f'Produtor {i+1} (CNPJ)'
+                )
             produtores.append(produtor)
 
         cidades_estados = [
             ("Ribeirão Preto", "SP"),
             ("Uberlândia", "MG"),
-            ("Cascavel", "PR")
+            ("Quixadá", "CE")
         ]
         self.stdout.write(self.style.SUCCESS('Criando propriedades...'))
         propriedades = []
         for i, produtor in enumerate(produtores):
             for j in range(2):
                 cidade, estado = choice(cidades_estados)
+                area_total = randint(80, 200)
+                area_agricultavel = randint(20, area_total - 20)
+                area_vegetacao = randint(0, area_total - area_agricultavel)
+                # Garantir a soma das áreas
+                if area_agricultavel + area_vegetacao > area_total:
+                    area_vegetacao = area_total - area_agricultavel
                 prop = Propriedade.objects.create(
                     produtor=produtor,
                     nome_propriedade=f'Fazenda {i+1}-{j+1}',
-                    area_total_hectares=randint(80, 200),
-                    area_agricultavel_hectares=randint(40, 100),
-                    area_vegetacao_hectares=randint(20, 60),
+                    area_total_hectares=area_total,
+                    area_agricultavel_hectares=area_agricultavel,
+                    area_vegetacao_hectares=area_vegetacao,
                     cidade=cidade,
                     estado=estado
                 )
                 propriedades.append(prop)
 
         self.stdout.write(self.style.SUCCESS('Criando safras e culturas...'))
-        culturas = ["Soja", "Milho", "Café", "Algodão"]
+        culturas = ["Soja", "Milho", "Café", "Algodão", "Cacau"]
         for prop in propriedades:
-            for ano in [2023, 2024]:
+            for ano in [2023, 2024, 2025]:
                 safra = Safra.objects.create(
                     propriedade=prop,
                     ano=ano,
