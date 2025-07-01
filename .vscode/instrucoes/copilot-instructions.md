@@ -29,9 +29,3 @@
 
 9. **Preparação para Produção**
     - Exige que o código esteja pronto para produção, incluindo configuração de variáveis de ambiente, banco de dados e dependências.
-
-10. **Atualização de Planejamento**
-     - Determina a atualização do arquivo `plan.md` para refletir as mudanças, promovendo rastreabilidade e alinhamento do time.
-
-11. **Exemplos de Uso**
-     - Recomenda incluir exemplos de uso na documentação, facilitando a adoção do código por novos desenvolvedores.
