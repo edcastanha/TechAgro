@@ -1,8 +1,54 @@
 import re
 import uuid
-
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+
+def validate_cpf(value):
+    """
+    Valida um CPF. Exemplo simplificado, para uma validação robusta,
+    considere bibliotecas como 'django-cpf-cnpj'.
+    """
+    cpf = re.sub(r'[^0-9]', '', value)
+    if len(cpf) != 11:
+        raise ValidationError('CPF deve ter 11 dígitos.')
+    if cpf == cpf[0] * 11:
+        raise ValidationError('CPF inválido.')
+    # Validação dos dígitos verificadores (simplificada)
+    for i in range(9, 11):
+        soma = sum(int(cpf[num]) * ((i+1) - num) for num in range(0, i))
+        digito = ((soma * 10) % 11) % 10
+        if digito != int(cpf[i]):
+            raise ValidationError('CPF inválido.')
+    return value
+
+def validate_cnpj(value):
+    """
+    Valida um CNPJ. Exemplo simplificado.
+    """
+    cnpj = re.sub(r'[^0-9]', '', value)
+    if len(cnpj) != 14:
+        raise ValidationError('CNPJ deve ter 14 dígitos.')
+    if cnpj == cnpj[0] * 14:
+        raise ValidationError('CNPJ inválido.')
+    # Validação dos dígitos verificadores (simplificada)
+    pesos1 = [5,4,3,2,9,8,7,6,5,4,3,2]
+    pesos2 = [6] + pesos1
+    for i, pesos in enumerate([pesos1, pesos2]):
+        soma = sum(int(cnpj[num]) * pesos[num] for num in range(len(pesos)))
+        digito = 11 - soma % 11
+        if digito >= 10:
+            digito = 0
+        if digito != int(cnpj[12 + i]):
+            raise ValidationError('CNPJ inválido.')
+    return value
+
+def validate_areas_Propriedade(area_total, area_agricultavel, area_vegetacao):
+    if (area_agricultavel is not None and area_vegetacao is not None and area_total is not None):
+        if (area_agricultavel + area_vegetacao) > area_total:
+            raise ValidationError(
+                'A soma da área agricultável e de vegetação não pode exceder a área total da Propriedade.'
+            )
 
 class BaseModel(models.Model):
     """
@@ -52,11 +98,9 @@ class Produtor(BaseModel):
 
         if len(cleaned_document) == 11:
             self.tipo_documento = 'CPF'
-            # Chame o validador de CPF
             validate_cpf(cleaned_document)
         elif len(cleaned_document) == 14:
             self.tipo_documento = 'CNPJ'
-            # Chame o validador de CNPJ
             validate_cnpj(cleaned_document)
         else:
             raise ValidationError({
