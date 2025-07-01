@@ -1,2 +1,2 @@
-python techagro/manage.py makemigrations
+python techagro/manage.py makemigrations produtores
 python techagro/manage.py migrate

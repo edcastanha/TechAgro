@@ -1,24 +1,4 @@
-# dependencies
-node_modules
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-pnpm-debug.log
-
-# production build
-build
-dist
-
-# misc
-.DS_Store
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# editor directories and files
-.vscode
-.idea
-*.sublime-project
-*.sublime-workspace
+fly.toml
+.git/
+*.sqlite3
+.virtual

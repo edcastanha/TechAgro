@@ -68,7 +68,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # CORS settings
 
-CSRF_TRUSTED_ORIGINS = ['*']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:7000', 'http://localhost:5000', 'https://techagro.fly.dev']
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
