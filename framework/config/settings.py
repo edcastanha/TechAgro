@@ -13,11 +13,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('DJANGO_SECRET_KEY') # Ajuste aqui
-DEBUG = config('DJANGO_DEBUG', cast=bool) # Ajuste aqui
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+DEBUG = config('DJANGO_DEBUG', cast=bool) 
 
 ALLOWED_HOSTS = ['*']
 
@@ -30,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  # Adicione o Django REST Framework
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# CORS settings
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:7000',
+    'http://localhost:8000',
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -99,9 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -117,3 +124,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+def get_env_variable(var_name):
+    """Get the environment variable or return exception."""
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
+
+SETTINGS_MODULE = get_env_variable('DJANGO_SETTINGS_MODULE')
+
+if SETTINGS_MODULE == 'framework.settings.dev':
+    from .settings.dev import *
+elif SETTINGS_MODULE == 'framework.settings.prod':
+    from .settings.prod import *
+else:
+    # Default to base settings if no specific module is set or recognized
+    from .settings.base import *
