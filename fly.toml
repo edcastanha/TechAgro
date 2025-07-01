@@ -5,7 +5,7 @@
 
 app = 'techagro'
 primary_region = 'gig'
-console_command = '/techagro/manage.py shell'
+console_command = '/code/manage.py shell'
 
 [build]
 
@@ -29,5 +29,5 @@ release_command = "/bin/sh -c \"python manage.py migrate --noinput && python man
   cpus = 1
 
 [[statics]]
-  guest_path = '/techagro/static'
+  guest_path = '/static'
   url_prefix = '/static/'

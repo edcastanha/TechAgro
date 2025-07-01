@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /techagro
+RUN mkdir -p /code
 
-WORKDIR /techagro
+WORKDIR /code
 
 RUN pip install poetry
 COPY pyproject.toml poetry.lock ./
