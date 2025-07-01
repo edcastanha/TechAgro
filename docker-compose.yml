@@ -5,28 +5,28 @@ services:
     environment:
       POSTGRES_USER: "techagro_user"
       POSTGRES_PASSWORD: "changeme"
-      POSTGRES_DB: "techagro"
+      POSTGRES_DB: "techagro_db"
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
 
-  api:
-    build: ./docker/
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "python framework/manage.py migrate &&
+             python framework/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
     depends_on:
       - db
-    env_file:
-      - ./docker/.env.exemplo
-    restart: always
-    working_dir: /src
-    deploy:
-      replicas: 1 # Para load balancing, aumente o número de réplicas no config NGINX
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/docs"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     
   pgadmin:
     image: dpage/pgadmin4

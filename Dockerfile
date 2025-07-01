@@ -1,40 +1,38 @@
-# Utiliza a imagem oficial do Python 3.12
-FROM python:3.11-slim
+FROM python:3.12-slim-bookworm
 
 # Define o diretório de trabalho dentro do container
-WORKDIR /src
+WORKDIR /app
 
-# Define a variável de ambiente PYTHONPATH
-ENV PYTHONPATH=/src \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+# Define variáveis de ambiente para Python
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PATH="/root/.poetry/bin:$PATH"
 
-# Copia o entrypoint customizado
-COPY ./docker/entrypoint.sh ./
-RUN chmod +x ./entrypoint.sh
-
-# Copia o arquivo de requisitos
-COPY ./src/requirements.txt ./
-
-# Instala as dependências
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Instala o cliente do PostgreSQL para usar pg_isready no entrypoint
+# Instala dependências do sistema necessárias para compilar algumas bibliotecas Python
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    gcc \
-    python3-dev \
-    libpq-dev \
-    postgresql-client
+    && apt-get install -y --no-install-recommends gcc libpq-dev curl \ 
+    && rm -rf /var/lib/apt/lists/*
 
-# Copia o restante do código para o container
-COPY ./src ./
+# Instala Poetry de forma mais robusta
+# Usaremos o script oficial de instalação do Poetry
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/usr/local python -
 
+# Adiciona o Poetry ao PATH (garante que esteja acessível)
+ENV PATH="/usr/local/bin:$PATH"
 
-# Expõe a porta padrão do FastAPI
-EXPOSE 8000
+# Copia os arquivos de dependências (pyproject.toml e poetry.lock)
+COPY pyproject.toml poetry.lock /app/
 
-# Comando para iniciar o servidor FastAPI
-ENTRYPOINT ["./entrypoint.sh"]
+# Configura o Poetry para não criar virtualenvs dentro do container
+RUN poetry config virtualenvs.create false
+
+# Instala as dependências do projeto usando Poetry
+# --no-root: Não instala o pacote raiz (seu projeto) como uma dependência.
+# Isso garante que as dependências do `pyproject.toml` sejam instaladas diretamente no ambiente do container.
+RUN poetry install --no-root
+
+# Copia o restante do código da aplicação
+COPY . /app/
+
+# O comando de execução (será sobrescrito pelo docker-compose)
+CMD ["python", "framework/manage.py", "runserver", "0.0.0.0:8000"]
