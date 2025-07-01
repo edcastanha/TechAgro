@@ -43,7 +43,7 @@ def validate_cnpj(value):
             raise ValidationError('CNPJ inválido.')
     return value
 
-def validate_areas_Propriedade(area_total, area_agricultavel, area_vegetacao):
+def validate_areas_propriedade(area_total, area_agricultavel, area_vegetacao):
     if (area_agricultavel is not None and area_vegetacao is not None and area_total is not None):
         if (area_agricultavel + area_vegetacao) > area_total:
             raise ValidationError(
@@ -134,7 +134,7 @@ class Propriedade(BaseModel):
     produtor = models.ForeignKey(
         Produtor,
         on_delete=models.CASCADE,
-        related_name='Propriedades',
+        related_name='propriedades',
         help_text="Produtor rural responsável por esta Propriedade."
     )
     nome_propriedade = models.CharField(
@@ -229,7 +229,7 @@ class Propriedade(BaseModel):
         ordering = ['nome_propriedade']
 
     def clean(self):
-        validate_areas_Propriedade(
+        validate_areas_propriedade(
             self.area_total_hectares,
             self.area_agricultavel_hectares,
             self.area_vegetacao_hectares
@@ -272,7 +272,7 @@ class Safra(BaseModel):
     class Meta:
         verbose_name = "Safra"
         verbose_name_plural = "Safras"
-        unique_together = ('Propriedade', 'ano')
+        unique_together = ('propriedade', 'ano')
         ordering = ['-ano']
 
     def clean(self):

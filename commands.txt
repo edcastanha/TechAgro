@@ -1,2 +1,2 @@
-python techagro/manage.py makemigrations src.infrastructure.django_app
-python techagro/manage.py smigrate
+python techagro/manage.py makemigrations produtores
+python techagro/manage.py migrate
