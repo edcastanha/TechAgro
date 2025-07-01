@@ -11,15 +11,15 @@ def validate_cpf(value):
     """
     cpf = re.sub(r'[^0-9]', '', value)
     if len(cpf) != 11:
-        raise ValidationError('CPF deve ter 11 dígitos.')
+        raise ValidationError({'documento': 'CPF deve ter 11 dígitos.'})
     if cpf == cpf[0] * 11:
-        raise ValidationError('CPF inválido.')
+        raise ValidationError({'documento': 'CPF inválido (todos os dígitos iguais).'})
     # Validação dos dígitos verificadores (simplificada)
     for i in range(9, 11):
         soma = sum(int(cpf[num]) * ((i+1) - num) for num in range(0, i))
         digito = ((soma * 10) % 11) % 10
         if digito != int(cpf[i]):
-            raise ValidationError('CPF inválido.')
+            raise ValidationError({'documento': 'CPF inválido.'})
     return value
 
 def validate_cnpj(value):
@@ -28,9 +28,9 @@ def validate_cnpj(value):
     """
     cnpj = re.sub(r'[^0-9]', '', value)
     if len(cnpj) != 14:
-        raise ValidationError('CNPJ deve ter 14 dígitos.')
+        raise ValidationError({'documento': 'CNPJ deve ter 14 dígitos.'})
     if cnpj == cnpj[0] * 14:
-        raise ValidationError('CNPJ inválido.')
+        raise ValidationError({'documento': 'CNPJ inválido (todos os dígitos iguais).'})
     # Validação dos dígitos verificadores (simplificada)
     pesos1 = [5,4,3,2,9,8,7,6,5,4,3,2]
     pesos2 = [6] + pesos1
@@ -40,15 +40,16 @@ def validate_cnpj(value):
         if digito >= 10:
             digito = 0
         if digito != int(cnpj[12 + i]):
-            raise ValidationError('CNPJ inválido.')
+            raise ValidationError({'documento': 'CNPJ inválido.'})
     return value
 
 def validate_areas_propriedade(area_total, area_agricultavel, area_vegetacao):
     if (area_agricultavel is not None and area_vegetacao is not None and area_total is not None):
         if (area_agricultavel + area_vegetacao) > area_total:
-            raise ValidationError(
-                'A soma da área agricultável e de vegetação não pode exceder a área total da Propriedade.'
-            )
+            raise ValidationError({
+                'area_agricultavel_hectares': 'A soma da área agricultável e de vegetação não pode exceder a área total da Propriedade.',
+                'area_vegetacao_hectares': 'A soma da área agricultável e de vegetação não pode exceder a área total da Propriedade.'
+            })
 
 class BaseModel(models.Model):
     """
@@ -57,6 +58,51 @@ class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, help_text="Data e hora de criação do registro.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Data e hora da última atualização do registro.")
+    class Meta:
+        abstract = True
+
+class Endereco(models.Model):
+    """
+    Modelo abstrato para representar um endereço detalhado.
+    """
+    cep = models.CharField(
+        max_length=9, blank=True, null=True,
+        help_text="CEP da propriedade (opcional)."
+    )
+    logradouro = models.CharField(
+        max_length=255, blank=True, null=True,
+        help_text="Rua, avenida, estrada etc. (opcional)."
+    )
+    numero = models.CharField(
+        max_length=10, blank=True, null=True,
+        help_text="Número do imóvel (opcional)."
+    )
+    complemento = models.CharField(
+        max_length=100, blank=True, null=True,
+        help_text="Complemento do endereço (ex: Lote 12, Fundos) (opcional)."
+    )
+    bairro = models.CharField(
+        max_length=100, blank=True, null=True,
+        help_text="Bairro onde a Propriedade está localizada (opcional)."
+    )
+    cidade = models.CharField(
+        max_length=100,
+        help_text="Cidade onde a Propriedade está localizada."
+    )
+    estado = models.CharField(
+        max_length=2,
+        help_text="Sigla do estado (UF) onde a Propriedade está localizada."
+    )
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True,
+        validators=[MinValueValidator(-90), MaxValueValidator(90)],
+        help_text="Latitude da propriedade (ex: -23.55052)."
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True,
+        validators=[MinValueValidator(-180), MaxValueValidator(180)],
+        help_text="Longitude da propriedade (ex: -46.63330)."
+    )
     class Meta:
         abstract = True
 
@@ -119,7 +165,7 @@ class Produtor(BaseModel):
     def __str__(self):
         return self.nome
 
-class Propriedade(BaseModel):
+class Propriedade(Endereco, BaseModel):
     """
     Modelo para representar uma Propriedade (Propriedade Rural) pertencente a um produtor,
     agora com endereço detalhado e tipo de atividade.
@@ -141,62 +187,6 @@ class Propriedade(BaseModel):
         max_length=255,
         help_text="Nome da Propriedade ou propriedade rural."
     )
-    # --- Campos de Endereço Detalhado ---
-    cep = models.CharField(
-        max_length=9, # Ex: 99999-999
-        blank=True,
-        null=True,
-        help_text="CEP da propriedade (opcional)."
-    )
-    logradouro = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="Rua, avenida, estrada etc. (opcional)."
-    )
-    numero = models.CharField(
-        max_length=10,
-        blank=True,
-        null=True,
-        help_text="Número do imóvel (opcional)."
-    )
-    complemento = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        help_text="Complemento do endereço (ex: Lote 12, Fundos) (opcional)."
-    )
-    bairro = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        help_text="Bairro onde a Propriedade está localizada (opcional)."
-    )
-    cidade = models.CharField(
-        max_length=100,
-        help_text="Cidade onde a Propriedade está localizada."
-    )
-    estado = models.CharField(
-        max_length=2, # Ex: SP, MG, BA
-        help_text="Sigla do estado (UF) onde a Propriedade está localizada."
-    )
-    latitude = models.DecimalField(
-        max_digits=9,
-        decimal_places=6,
-        null=True,
-        blank=True,
-        validators=[MinValueValidator(-90), MaxValueValidator(90)],
-        help_text="Latitude da propriedade (ex: -23.55052)."
-    )
-    longitude = models.DecimalField(
-        max_digits=9,
-        decimal_places=6,
-        null=True,
-        blank=True,
-        validators=[MinValueValidator(-180), MaxValueValidator(180)],
-        help_text="Longitude da propriedade (ex: -46.63330)."
-    )
-    # --- Outros Campos Existentes ---
     tipo_atividade = models.CharField(
         max_length=20,
         choices=TIPO_ATIVIDADE_CHOICES,
