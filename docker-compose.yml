@@ -12,7 +12,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     restart: always
 
-  app:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -39,7 +39,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - app
+      - api
 
 volumes:
   pgdata:

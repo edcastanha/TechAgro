@@ -17,6 +17,7 @@ class Produtor:
                     metadata={'description': 'Identificador único do Produtor.'})
     # O Produtor é associado a um único ResponsávelLegal (Pessoa ou Empresa)
     responsavel_legal: ResponsavelLegal = field(metadata={'description': 'O responsável legal pelo produtor.'})
+    ativo: bool = field(default=True, metadata={'description': 'Indica se o produtor está ativo no sistema.'}) # NOVO ATRIBUTO
 
     def __post_init__(self):
         """
@@ -47,6 +48,14 @@ class Produtor:
         """Verifica se o produtor é uma pessoa jurídica."""
         return self.responsavel_legal.eh_pessoa_juridica()
 
+    def inativar(self) -> None:
+        """Define o produtor como inativo."""
+        self.ativo = False
+
+    def reativar(self) -> None:
+        """Define o produtor como ativo."""
+        self.ativo = True
+        
     def __eq__(self, other):
         """
         Define a igualdade entre dois Produtores pela sua ID.
