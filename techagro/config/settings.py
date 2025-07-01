@@ -23,7 +23,12 @@ DEBUG = config('DJANGO_DEBUG', cast=bool)
 
 #ALLOWED_HOSTS = ['*']
 APP_NAME = os.environ.get("FLY_APP_NAME")
+
 ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
+
+if DEBUG:
+    print('DEBUG TRUE: Configurando ALLOWED_HOSTS para desenvolvimento')
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -87,7 +92,6 @@ if DEBUG:
             'PORT': '5432',
         }
     }
-    
 else:
     DATABASES = {
         'default': dj_database_url.config(default=config('DATABASE_URL')) # type: ignore
@@ -128,8 +132,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
