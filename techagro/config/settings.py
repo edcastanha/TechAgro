@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_spectacular',
+    # Adicione outros aplicativos aqui conforme necessário
+    'produtores.apps.ProdutoresConfig',
 ]
 
 MIDDLEWARE = [
@@ -65,22 +68,25 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # CORS settings
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:7000',
-    'http://localhost:8000',
-]
+CSRF_TRUSTED_ORIGINS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': config('DB_NAME'),
+#        'USER': config('DB_USER'),
+#        'PASSWORD': config('DB_PASSWORD'),
+#        'HOST': 'db', # Nome do serviço do Docker Compose
+#        'PORT': '5432',
+#    }
+#}
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': 'db', # Nome do serviço do Docker Compose
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -125,21 +131,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
-def get_env_variable(var_name):
-    """Get the environment variable or return exception."""
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = "Set the %s environment variable" % var_name
-        raise ImproperlyConfigured(error_msg)
-
-SETTINGS_MODULE = get_env_variable('DJANGO_SETTINGS_MODULE')
-
-if SETTINGS_MODULE == 'framework.settings.dev':
-    from .settings.dev import *
-elif SETTINGS_MODULE == 'framework.settings.prod':
-    from .settings.prod import *
-else:
-    # Default to base settings if no specific module is set or recognized
-    from .settings.base import *
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'TechAgro API',
+    'DESCRIPTION': 'Documentação da API do desafio Brain Agriculture',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}

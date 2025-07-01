@@ -20,13 +20,16 @@ A proposta é criar uma aplicação para gerenciar o cadastro de produtores rura
 
 - CPF ou CNPJ
 - Nome do produtor
+
 - Nome da fazenda (propriedade)
 - Cidade
 - Estado
 - Área total da fazenda (em hectares)
 - Área agricultável (em hectares)
 - Área de vegetação (em hectares)
+
 - Safras (ex: Safra 2021, Safra 2022)
+
 - Culturas plantadas (ex.: Soja na Safra 2021, Milho na Safra 2021, Café na Safra 2022)
 
 ### **Requisitos de negócio**

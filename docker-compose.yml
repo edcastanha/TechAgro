@@ -17,8 +17,8 @@ services:
       context: .
       dockerfile: Dockerfile
     command: >
-      sh -c "python framework/manage.py migrate &&
-             python framework/manage.py runserver 0.0.0.0:8000"
+      sh -c "python techagro/manage.py migrate &&
+             python techagro/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
     env_file:

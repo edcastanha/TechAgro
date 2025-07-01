@@ -1,6 +1,2 @@
-
-python framework/manage.py startapp produtor_rural_infra src/infrastructure/database/produtor_rural_infra
-python framework/manage.py startapp produtor_rural_api src/presentation/api/produtor_rural_api
-
-
-python framework/manage.py makemigrations src.infrastructure.django_app
+python techagro/manage.py makemigrations
+python techagro/manage.py migrate
