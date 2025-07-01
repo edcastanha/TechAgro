@@ -1,2 +1,6 @@
+# DJANGO INIT
 python techagro/manage.py makemigrations produtores
 python techagro/manage.py migrate
+
+# TESTS
+PYTHONPATH=./code pytest --cov=techagro --cov-report=term-missing

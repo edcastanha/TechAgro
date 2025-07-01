@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from django.urls import reverse
-from produtores.models import Produtor
+from techagro.produtores.models import Produtor
 
 @pytest.mark.django_db
 def test_criar_produtor_api():
