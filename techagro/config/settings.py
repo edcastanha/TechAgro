@@ -14,13 +14,16 @@ import os
 from pathlib import Path
 from decouple import config
 from django.core.exceptions import ImproperlyConfigured
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 DEBUG = config('DJANGO_DEBUG', cast=bool) 
 
-ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['*']
+APP_NAME = os.environ.get("FLY_APP_NAME")
+ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
 
 # Application definition
 
@@ -68,27 +71,28 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # CORS settings
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:7000', 'http://localhost:5000', 'https://techagro.fly.dev']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:7000', 'http://localhost:5000', 'f"https://{APP_NAME}.fly.dev"']
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': config('DB_NAME'),
-#        'USER': config('DB_USER'),
-#        'PASSWORD': config('DB_PASSWORD'),
-#        'HOST': 'db', # Nome do serviço do Docker Compose
-#        'PORT': '5432',
-#    }
-#}
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    print('DEBUG TRUE: Configurando banco de dados para desenvolvimento')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': 'db', # Nome do serviço do Docker Compose
+            'PORT': '5432',
+        }
     }
-}
+    
+else:
+    DATABASES = {
+        'default': dj_database_url.config(default=config('DATABASE_URL')) # type: ignore
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

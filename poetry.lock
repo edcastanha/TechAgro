@@ -109,6 +109,22 @@ files = [
 ]
 
 [[package]]
+name = "dj-database-url"
+version = "3.0.0"
+description = "Use Database URLs in your Django Application."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "dj_database_url-3.0.0-py3-none-any.whl", hash = "sha256:cbb84b2e3f372460b1e43692bf9fdc0c32e78930ee101db470cba56105fca1e5"},
+    {file = "dj_database_url-3.0.0.tar.gz", hash = "sha256:749a7a42d88d6c741c1d2f4ab24c2ae0d5cd12f00f2d1d55ff9f5fadabe8a2c3"},
+]
+
+[package.dependencies]
+Django = ">=4.2"
+typing_extensions = ">=4.0.0"
+
+[[package]]
 name = "django"
 version = "5.2.3"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -818,7 +834,6 @@ files = [
     {file = "typing_extensions-4.14.0-py3-none-any.whl", hash = "sha256:a1514509136dd0b477638fc68d6a91497af5076466ad0fa6c338e44e359944af"},
     {file = "typing_extensions-4.14.0.tar.gz", hash = "sha256:8676b788e32f02ab42d9e7c61324048ae4c6d844a399eebace3d4979d75ceef4"},
 ]
-markers = {main = "python_version < \"3.13\""}
 
 [[package]]
 name = "tzdata"
@@ -848,4 +863,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "be745a747b2dd72bd9e4b0f6b392fcc06071008c8da62f0d61fef54dbf1bc1dc"
+content-hash = "7d9d298e165a69ce723625fb7dd9a0a92144ff17ecac1fdfeaa273fb3d7444a0"

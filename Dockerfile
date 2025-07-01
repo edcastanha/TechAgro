@@ -16,10 +16,10 @@ RUN mkdir -p /techagro
 WORKDIR /techagro
 
 RUN pip install poetry
-COPY pyproject.toml poetry.lock /techagro/
+COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false
 RUN poetry install --only main --no-root --no-interaction
-COPY ./techagro /techagro
+COPY ./techagro ./
 
 EXPOSE 8000
 

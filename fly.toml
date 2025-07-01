@@ -1,11 +1,11 @@
-# fly.toml app configuration file generated for techagro-desafio on 2025-07-01T11:09:11-03:00
+# fly.toml app configuration file generated for techagro on 2025-07-01T13:32:10-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'techagro-desafio'
+app = 'techagro'
 primary_region = 'gig'
-console_command = '/techagro/manage.py shell'
+console_command = '/code/manage.py shell'
 
 [build]
 
@@ -13,6 +13,10 @@ console_command = '/techagro/manage.py shell'
   release_command = 'python manage.py migrate --noinput'
 
 [env]
+  APP_NAME = 'techagro'
+  DATABASE_URL = 'postgres://pgdb-z7y24od26yprgqd1:oNx4tKqYL5imiHlxQzZHpkER@pgbouncer.z7y24od26yprgqd1.flympg.net/pgdb-z7y24od26yprgqd1'
+  DJANGO_DEBUG = 'False'
+  DJANGO_SECRET_KEY = 't**+93o0emv+8bgdmrqqd-zd97y$5kl+-$!=ixex+ns9^27b&@'
   PORT = '8000'
 
 [http_service]
@@ -24,10 +28,10 @@ console_command = '/techagro/manage.py shell'
   processes = ['app']
 
 [[vm]]
-  memory = '512mb'
+  memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
 
 [[statics]]
-  guest_path = '/techagro/static'
+  guest_path = '/code/static'
   url_prefix = '/static/'
