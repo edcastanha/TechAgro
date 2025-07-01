@@ -5,24 +5,20 @@
 
 app = 'techagro'
 primary_region = 'gig'
-console_command = '/code/manage.py shell'
+console_command = '/techagro/manage.py shell'
 
 [build]
 
 [deploy]
-  release_command = 'python manage.py migrate --noinput'
+  release_command = 'python manage.py migrate --noinput && python manage.py collectstatic --noinput'
 
 [env]
-  APP_NAME = 'techagro'
-  DATABASE_URL = 'postgres://pgdb-z7y24od26yprgqd1:oNx4tKqYL5imiHlxQzZHpkER@pgbouncer.z7y24od26yprgqd1.flympg.net/pgdb-z7y24od26yprgqd1'
-  DJANGO_DEBUG = 'False'
-  DJANGO_SECRET_KEY = 't**+93o0emv+8bgdmrqqd-zd97y$5kl+-$!=ixex+ns9^27b&@'
   PORT = '8000'
 
 [http_service]
   internal_port = 8000
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
@@ -33,5 +29,5 @@ console_command = '/code/manage.py shell'
   cpus = 1
 
 [[statics]]
-  guest_path = '/code/static'
+  guest_path = '/techagro/static'
   url_prefix = '/static/'
