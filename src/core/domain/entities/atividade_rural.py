@@ -1,9 +1,10 @@
-# src/core/domain/entities/atividade_rural.py
+# src/core/domain/entities/atividade_rural.py (AJUSTADO)
 
 import uuid
 from dataclasses import dataclass, field
 from src.core.domain.exceptions.exceptions import ErroValidacaoAtividadeRural
-from src.core.domain.value_objects.areas import MedidaArea # Se a atividade tiver área afetada
+from src.core.domain.value_objects.areas import MedidaArea
+from src.core.domain.enums.ramo_atividade import RamoAtividade
 from typing import Optional
 
 @dataclass(eq=False)
@@ -14,7 +15,8 @@ class AtividadeRural:
     """
     id: str = field(default_factory=lambda: str(uuid.uuid4()), init=False,
                     metadata={'description': 'Identificador único da Atividade Rural.'})
-    nome_atividade: str = field(metadata={'description': 'Nome da atividade (ex: "Plantio de Soja", "Criação de Gado").'})
+    nome_atividade: str = field(metadata={'description': 'Nome descritivo da atividade (ex: "Plantio de Soja", "Criação de Gado Nelore").'})
+    ramo: RamoAtividade = field(metadata={'description': 'Ramo de atividade ao qual esta atividade pertence (Agricultura, Pecuária, etc.).'}) # NOVO ATRIBUTO
     # safra_id: str # Referência ao ID da Safra à qual esta atividade pertence
     area_afetada: Optional[MedidaArea] = field(default=None,
                                             metadata={'description': 'Área específica da propriedade afetada por esta atividade (opcional).'})
@@ -27,6 +29,10 @@ class AtividadeRural:
         """
         if not self.nome_atividade or not self.nome_atividade.strip():
             raise ErroValidacaoAtividadeRural("O nome da atividade rural não pode estar vazio.")
+        
+        # Garante que o ramo seja uma instância do Enum RamoAtividade
+        if not isinstance(self.ramo, RamoAtividade):
+            raise ErroValidacaoAtividadeRural("O ramo da atividade deve ser um valor válido de RamoAtividade (Enum).")
         
         # Se uma área afetada for fornecida, garanta que não seja negativa (já validado no VO MedidaArea, mas bom ter um sanity check)
         if self.area_afetada and self.area_afetada.valor_em_hectares < 0:
