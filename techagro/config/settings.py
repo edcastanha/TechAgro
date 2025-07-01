@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    # Adicione outros aplicativos aqui conforme necessário
+    'produtores.apps.ProdutoresConfig',
 ]
 
 MIDDLEWARE = [
@@ -124,22 +126,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-def get_env_variable(var_name):
-    """Get the environment variable or return exception."""
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = "Set the %s environment variable" % var_name
-        raise ImproperlyConfigured(error_msg)
-
-SETTINGS_MODULE = get_env_variable('DJANGO_SETTINGS_MODULE')
-
-if SETTINGS_MODULE == 'framework.settings.dev':
-    from .settings.dev import *
-elif SETTINGS_MODULE == 'framework.settings.prod':
-    from .settings.prod import *
-else:
-    # Default to base settings if no specific module is set or recognized
-    from .settings.base import *

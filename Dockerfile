@@ -35,4 +35,4 @@ RUN poetry install --no-root
 COPY . /app/
 
 # O comando de execução (será sobrescrito pelo docker-compose)
-CMD ["python", "framework/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "techagro/manage.py", "runserver", "0.0.0.0:8000"]
