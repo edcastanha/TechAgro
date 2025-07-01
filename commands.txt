@@ -2,5 +2,12 @@
 python techagro/manage.py makemigrations produtores
 python techagro/manage.py migrate
 
+# Popular db
+python techagro/manage.py popular_mock
+
 # TESTS
-PYTHONPATH=./code pytest --cov=techagro --cov-report=term-missing
+PYTHONPATH=. pytest --cov=techagro --cov-report=term-missing
+
+
+# __INIT__ Python namespace
+find techagro -type d -exec touch {}/__init__.py \;

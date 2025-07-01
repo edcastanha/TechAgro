@@ -46,6 +46,48 @@ A API está disponível publicamente em:
 
 > **Atenção:** O primeiro acesso pode levar até 10 segundos para responder, pois o pod pode estar em cold start (inicialização automática na nuvem).
 
+## Como rodar o projeto localmente (sem Docker)
+
+1. Crie e ative um ambiente virtual:
+
+```bash
+python3 -m venv .virtual
+source .virtual/bin/activate
+```
+
+2. Instale o Poetry (caso não tenha):
+
+```bash
+pip install poetry
+```
+
+3. Instale as dependências do projeto:
+
+```bash
+poetry install
+```
+
+4. Configure as variáveis de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+5. Execute as migrações e popule o banco com dados mock:
+
+```bash
+python techagro/manage.py migrate
+python techagro/manage.py popular_mock
+```
+
+6. Rode o servidor local:
+
+```bash
+python techagro/manage.py runserver
+```
+
+Acesse a API em: http://localhost:8000/v1/api/
+
 ## Endpoints principais
 - `/v1/api/produtores/` — CRUD de produtores
 - `/v1/api/propriedades/` — CRUD de propriedades
