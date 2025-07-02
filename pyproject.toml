@@ -17,6 +17,7 @@ drf-spectacular = "^0.28.0"
 dj-database-url = "^3.0.0"
 pytest-cov = "^6.2.1"
 loguru = "^0.7.3"
+mkdocs = "^1.6.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0"

@@ -58,18 +58,6 @@ Sabemos que você pode ter seu próprio estilo, mas aqui estão algumas tecnolog
 - **Documentações**: Para facilitar o entendimento do funcionamento do sistema, é importante incluir um README claro, uma especificação OpenAPI e, caso necessário, diagramas que ajudem a visualizar a arquitetura ou os processos.
 - **Bônus**: Se conseguir disponibilizar a aplicação na nuvem e acessível via internet, será um diferencial!
 
-### **Se você for desenvolvedor FRONTEND:**
-
-- Utilize **TypeScript**.
-- Utilize **ReactJS**.
-- Use **Redux** para gerenciar o estado da aplicação.
-  - Se preferir, você pode usar **Context API** como alternativa ou complemento ao Redux (opcional).
-- Estruture dados "mockados" para simular cenários.
-- Desenvolva testes unitários com **Jest** e **React Testing Library**.
-- Estruture os componentes utilizando atomic design patterns.
-- Utilize css in js com bibliotecas como **Styled Components** ou **Emotion**.
-- Estruture o projeto como um microfrontend (opcional);
-
 ### **Se você for desenvolvedor BACKEND:**
 
 - Desenvolva uma **API REST**.
@@ -81,20 +69,10 @@ Sabemos que você pode ter seu próprio estilo, mas aqui estão algumas tecnolog
 - Inclua logs para garantir a observabilidade do sistema, facilitando o monitoramento e a identificação de possíveis problemas.
 - Utilize um framework de ORM.
 
-#### **Se você for desenvolvedor BACKEND Node:**
-
-- Utilize **TypeScript**.
-- Utilize **NestJS** ou **AdonisJS**
-
 #### **Se você for desenvolvedor BACKEND Python:**
 
 - Utilize **Python 3**.
 - Utilize **Django**, **Flask** ou **FastAPI**.
-
-### **Se você for desenvolvedor FULLSTACK:**
-
-- Conclua tanto o FRONTEND quanto o BACKEND, garantindo a integração entre eles.
-
 ---
 
 ## **Como enviar seu projeto?**
