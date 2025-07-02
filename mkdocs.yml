@@ -1,0 +1,5 @@
+site_name: TechAgro
+
+nav:
+  - Home: home.md
+  - Desafio: desafio.md
