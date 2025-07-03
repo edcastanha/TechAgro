@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="/img/favicon.ico">
-        <title>Tech Agro - Desafio</title>
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/css/fontawesome.min.css" rel="stylesheet">
-        <link href="/css/brands.min.css" rel="stylesheet">
-        <link href="/css/solid.min.css" rel="stylesheet">
-        <link href="/css/v4-font-face.min.css" rel="stylesheet">
-        <link href="/css/base.css" rel="stylesheet">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Playload - Tech Agro - Desafio</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
         <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
@@ -24,7 +24,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="/.">Tech Agro - Desafio</a>
+                <a class="navbar-brand" href="..">Tech Agro - Desafio</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,13 +35,13 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="nav-item">
-                                <a href="/desafio/" class="nav-link">Do desafio</a>
+                                <a href="../desafio/" class="nav-link">Do desafio</a>
                             </li>
                             <li class="nav-item">
-                                <a href="/home/" class="nav-link">Sobre</a>
+                                <a href="../home/" class="nav-link">Sobre</a>
                             </li>
                             <li class="nav-item">
-                                <a href="/license/" class="nav-link">Licenca</a>
+                                <a href="../license/" class="nav-link">Licenca</a>
                             </li>
                         </ul>
 
@@ -58,15 +58,86 @@
 
         <div class="container">
             <div class="row">
-
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-      </div>
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
     </div>
 
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#exemplos-de-payloads" class="nav-link">Exemplos de payloads</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
 
+<h2 id="exemplos-de-payloads">Exemplos de payloads</h2>
+<h3 id="criar-produtor-post-v1apiprodutores">Criar produtor (POST /v1/api/produtores/)</h3>
+<pre><code class="language-json">{
+  &quot;documento&quot;: &quot;12345678909&quot;,
+  &quot;nome&quot;: &quot;Produtor Exemplo&quot;
+}
+</code></pre>
+<h3 id="resposta-201-created">Resposta (201 Created)</h3>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;&lt;uuid&gt;&quot;,
+  &quot;documento&quot;: &quot;12345678909&quot;,
+  &quot;tipo_documento&quot;: &quot;CPF&quot;,
+  &quot;nome&quot;: &quot;Produtor Exemplo&quot;,
+  &quot;Propriedades&quot;: []
+}
+</code></pre>
+<h3 id="criar-propriedade-post-v1apipropriedades">Criar propriedade (POST /v1/api/propriedades/)</h3>
+<pre><code class="language-json">{
+  &quot;produtor&quot;: &quot;&lt;id_produtor&gt;&quot;,
+  &quot;nome_propriedade&quot;: &quot;Fazenda Exemplo&quot;,
+  &quot;area_total_hectares&quot;: 100,
+  &quot;area_agricultavel_hectares&quot;: 60,
+  &quot;area_vegetacao_hectares&quot;: 40,
+  &quot;cidade&quot;: &quot;Uberlândia&quot;,
+  &quot;estado&quot;: &quot;MG&quot;
+}
+</code></pre>
+<h3 id="criar-safra-post-v1apisafras">Criar safra (POST /v1/api/safras/)</h3>
+<pre><code class="language-json">{
+  &quot;propriedade&quot;: &quot;&lt;id_propriedade&gt;&quot;,
+  &quot;ano&quot;: 2024,
+  &quot;data_inicio&quot;: &quot;2024-01-01&quot;,
+  &quot;data_fim&quot;: &quot;2024-12-31&quot;
+}
+</code></pre>
+<h3 id="criar-cultura-plantada-post-v1apiatividades">Criar cultura plantada (POST /v1/api/atividades/)</h3>
+<pre><code class="language-json">{
+  &quot;safra&quot;: &quot;&lt;id_safra&gt;&quot;,
+  &quot;nome_cultura&quot;: &quot;Soja&quot;,
+  &quot;area_plantada_hectares&quot;: 50
+}
+</code></pre>
+<h3 id="exemplo-de-resposta-do-dashboard-get-v1apidashboard">Exemplo de resposta do dashboard (GET /v1/api/dashboard/)</h3>
+<pre><code class="language-json">{
+  &quot;total_fazendas&quot;: 6,
+  &quot;total_hectares&quot;: 800,
+  &quot;por_estado&quot;: [
+    {&quot;estado&quot;: &quot;MG&quot;, &quot;qtd&quot;: 2},
+    {&quot;estado&quot;: &quot;SP&quot;, &quot;qtd&quot;: 2}
+  ],
+  &quot;por_cultura&quot;: [
+    {&quot;nome_cultura&quot;: &quot;Soja&quot;, &quot;qtd&quot;: 4},
+    {&quot;nome_cultura&quot;: &quot;Milho&quot;, &quot;qtd&quot;: 3}
+  ],
+  &quot;uso_solo&quot;: {
+    &quot;total_agricultavel&quot;: 400,
+    &quot;total_vegetacao&quot;: 200
+  }
+}
+</code></pre></div>
             </div>
         </div>
 
@@ -74,13 +145,13 @@
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="../js/bootstrap.bundle.min.js"></script>
         <script>
-            var base_url = "/",
+            var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="/js/base.js"></script>
-        <script src="/search/main.js"></script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
