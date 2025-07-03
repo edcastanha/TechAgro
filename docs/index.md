@@ -19,6 +19,12 @@ Esta aplicação fornece uma API REST para cadastro e gestão de produtores rura
 - MkDocs (para documentação)
 
 
+## Executando o Projeto via Docker e Docker Compose
+[Página sobre execução via Docker](https://edcastanha.github.io/TechAgro/ExecDocker/)
+
+## Executando o Projeto localmente (sem Docker)
+[Página sobre execução local](https://edcastanha.github.io/TechAgro/ExecLocal/)
+
 ## Endpoints principais
 |   URL   | Descrição |
 |---------|-----------|
