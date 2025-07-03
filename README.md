@@ -21,10 +21,8 @@ Esta aplicação fornece uma API REST para cadastro e gestão de produtores rura
 [Página sobre execução via Docker](https://edcastanha.github.io/TechAgro/ExecDocker/)
 ## Executando o Projeto localmente (sem Docker)
 [Página sobre execução local](https://edcastanha.github.io/TechAgro/ExecLocal/)
-```
 
 A API estará disponível em `http://localhost:7000/v1/api/`
-
 
 ## Endpoints principais
 |   URL   | Descrição |

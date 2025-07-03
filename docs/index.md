@@ -1,4 +1,6 @@
-# TechAgro
+# Autor - Edson Bezerra
+### Perfil - [linkedin.com/edsonlbfilho/](https://www.linkedin.com/in/edsonlbfilho/)
+
 
 ## API para Gestão de Produtores Rurais
 
