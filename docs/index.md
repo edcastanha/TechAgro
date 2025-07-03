@@ -1,17 +1,62 @@
-# Welcome to MkDocs
+# TechAgro
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+## API para Gestão de Produtores Rurais
 
-## Commands
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+> **Aviso:** Esta API é uma prova de conceito (POC) para fins de avaliação técnica. **Todos os dados são fictícios** e não representam informações reais. **Não foi implementado nenhum mecanismo de autenticação** para facilitar o acesso e uso da API durante a avaliação, eliminando a necessidade de cadastro ou login.
 
-## Project layout
+## Visão Geral
+Esta aplicação fornece uma API REST para cadastro e gestão de produtores rurais, propriedades, safras e culturas, com validações de negócio, dashboard de dados agregados e documentação automática.
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## Tecnologias
+- Python 3.11+
+- Django 5
+- Django REST Framework
+- PostgreSQL
+- Nginx (opcional, para produção)
+- Docker & Docker Compose
+- drf-spectacular (OpenAPI/Swagger)
+- MkDocs (para documentação)
+
+
+## Endpoints principais
+|   URL   | Descrição |
+|---------|-----------|
+|[http://localhost:7000/v1/api/produtores/](http://localhost:7000/v1/api/produtores/) | CRUD de produtores |
+|[http://localhost:7000/v1/api/propriedades/](http://localhost:7000/v1/api/propriedades/) | CRUD de propriedades |
+|[http://localhost:7000/v1/api/safras/](http://localhost:7000/v1/api/safras/) | CRUD de safras |
+|[http://localhost:7000/v1/api/atividades/](http://localhost:7000/v1/api/atividades/) | CRUD de culturas plantadas |
+|[http://localhost:7000/v1/api/dashboard/](http://localhost:7000/v1/api/dashboard/) | Dados agregados para gráficos | 
+
+
+## Testes
+
+O projeto utiliza `pytest` e `pytest-django` para testes automatizados.
+
+### Executando os testes
+
+```bash
+pytest
+```
+
+### Gerando relatório de cobertura
+
+```bash
+pytest --cov=techagro --cov-report=term-missing
+```
+
+> **Dica:** Os testes devem cobrir as principais regras de negócio, validações e endpoints da API.
+
+## Observabilidade
+Logs e monitoramento podem ser incrementados conforme necessidade.
+
+## Deploy
+Pronto para deploy em qualquer nuvem (exemplo: Fly.io, Heroku, etc). Basta configurar as variáveis de ambiente.
+
+## Autor
+Edson Bezerra 
+[Perfil](https://www.linkedin.com/in/edsonlbfilho/)
+
+---
+Projeto para avaliação técnic.a, não é um produto finalizado. Sinta-se à vontade para contribuir ou sugerir melhorias!
+

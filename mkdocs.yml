@@ -1,11 +1,14 @@
 site_name: Tech Agro - Desafio 
 
 theme:
-  name: mkdocs
+  name: readthedocs
   locale: pt
 
 nav:
-  - Do desafio: desafio.md
-  - Sobre: home.md
+  - Do Desafio: desafio.md
+  - Executar via Docker: ExecDocker.md
+  - Executar via Python: ExecLocal.md
+  - Exemplo de Dados: playload.md
+  - Sobre: sobre.md
   - Licenca: license.md
   
