@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Exemplo de Dados - Tech Agro - Desafio</title>
+    <title>Executar via Python - Tech Agro - Desafio</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Exemplo de Dados";
-        var mkdocs_page_input_path = "playload.md";
+        var mkdocs_page_name = "Executar via Python";
+        var mkdocs_page_input_path = "ExecLocal.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -47,26 +47,30 @@
                 <li class="toctree-l1"><a class="reference internal" href="../ExecDocker/">Executar via Docker</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../ExecLocal/">Executar via Python</a>
-                </li>
-              </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Exemplo de Dados</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Executar via Python</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#criar-produtor-post-v1apiprodutores">Criar produtor (POST /v1/api/produtores/)</a>
+    <li class="toctree-l2"><a class="reference internal" href="#crie-e-ative-um-ambiente-virtual">Crie e ative um ambiente virtual:</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#resposta-201-created">Resposta (201 Created)</a>
+    <li class="toctree-l2"><a class="reference internal" href="#instale-o-poetry-caso-nao-tenha">Instale o Poetry (caso não tenha):</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#criar-propriedade-post-v1apipropriedades">Criar propriedade (POST /v1/api/propriedades/)</a>
+    <li class="toctree-l2"><a class="reference internal" href="#instale-as-dependencias-do-projeto">Instale as dependências do projeto:</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#criar-safra-post-v1apisafras">Criar safra (POST /v1/api/safras/)</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configure-as-variaveis-de-ambiente">Configure as variáveis de ambiente:</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#criar-cultura-plantada-post-v1apiatividades">Criar cultura plantada (POST /v1/api/atividades/)</a>
+    <li class="toctree-l2"><a class="reference internal" href="#execute-as-migracoes-e-popule-o-banco-com-dados-mock">Execute as migrações e popule o banco com dados mock:</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#exemplo-de-resposta-do-dashboard-get-v1apidashboard">Exemplo de resposta do dashboard (GET /v1/api/dashboard/)</a>
+    <li class="toctree-l2"><a class="reference internal" href="#dados-de-exemplo-mock">Dados de exemplo (mock)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rode-o-servidor-local">Rode o servidor local:</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#a-api-estara-disponivel-em-httplocalhost7000v1api">A API estará disponível em http://localhost:7000/v1/api/</a>
     </li>
     </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../playload/">Exemplo de Dados</a>
                 </li>
               </ul>
               <ul>
@@ -91,7 +95,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Exemplo de Dados</li>
+      <li class="breadcrumb-item active">Executar via Python</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -100,72 +104,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="exemplos-de-payloads">Exemplos de payloads</h2>
-<h3 id="criar-produtor-post-v1apiprodutores">Criar produtor (POST /v1/api/produtores/)</h3>
-<pre><code class="language-json">{
-  &quot;documento&quot;: &quot;12345678909&quot;,
-  &quot;nome&quot;: &quot;Produtor Exemplo&quot;
-}
+                <h1 id="executando-o-projeto-localmente-sem-docker">Executando o Projeto localmente (sem Docker)</h1>
+<h3 id="crie-e-ative-um-ambiente-virtual">Crie e ative um ambiente virtual:</h3>
+<pre><code class="language-bash">python3 -m venv .virtual
+source .virtual/bin/activate
 </code></pre>
-<h3 id="resposta-201-created">Resposta (201 Created)</h3>
-<pre><code class="language-json">{
-  &quot;id&quot;: &quot;&lt;uuid&gt;&quot;,
-  &quot;documento&quot;: &quot;12345678909&quot;,
-  &quot;tipo_documento&quot;: &quot;CPF&quot;,
-  &quot;nome&quot;: &quot;Produtor Exemplo&quot;,
-  &quot;Propriedades&quot;: []
-}
+<h3 id="instale-o-poetry-caso-nao-tenha">Instale o Poetry (caso não tenha):</h3>
+<pre><code class="language-bash">pip install poetry
 </code></pre>
-<h3 id="criar-propriedade-post-v1apipropriedades">Criar propriedade (POST /v1/api/propriedades/)</h3>
-<pre><code class="language-json">{
-  &quot;produtor&quot;: &quot;&lt;id_produtor&gt;&quot;,
-  &quot;nome_propriedade&quot;: &quot;Fazenda Exemplo&quot;,
-  &quot;area_total_hectares&quot;: 100,
-  &quot;area_agricultavel_hectares&quot;: 60,
-  &quot;area_vegetacao_hectares&quot;: 40,
-  &quot;cidade&quot;: &quot;Uberlândia&quot;,
-  &quot;estado&quot;: &quot;MG&quot;
-}
+<h3 id="instale-as-dependencias-do-projeto">Instale as dependências do projeto:</h3>
+<pre><code class="language-bash">poetry install
 </code></pre>
-<h3 id="criar-safra-post-v1apisafras">Criar safra (POST /v1/api/safras/)</h3>
-<pre><code class="language-json">{
-  &quot;propriedade&quot;: &quot;&lt;id_propriedade&gt;&quot;,
-  &quot;ano&quot;: 2024,
-  &quot;data_inicio&quot;: &quot;2024-01-01&quot;,
-  &quot;data_fim&quot;: &quot;2024-12-31&quot;
-}
+<h3 id="configure-as-variaveis-de-ambiente">Configure as variáveis de ambiente:</h3>
+<pre><code class="language-bash">cp .env.example .env
 </code></pre>
-<h3 id="criar-cultura-plantada-post-v1apiatividades">Criar cultura plantada (POST /v1/api/atividades/)</h3>
-<pre><code class="language-json">{
-  &quot;safra&quot;: &quot;&lt;id_safra&gt;&quot;,
-  &quot;nome_cultura&quot;: &quot;Soja&quot;,
-  &quot;area_plantada_hectares&quot;: 50
-}
+<h3 id="execute-as-migracoes-e-popule-o-banco-com-dados-mock">Execute as migrações e popule o banco com dados mock:</h3>
+<pre><code class="language-bash">python techagro/manage.py migrate
 </code></pre>
-<h3 id="exemplo-de-resposta-do-dashboard-get-v1apidashboard">Exemplo de resposta do dashboard (GET /v1/api/dashboard/)</h3>
-<pre><code class="language-json">{
-  &quot;total_fazendas&quot;: 6,
-  &quot;total_hectares&quot;: 800,
-  &quot;por_estado&quot;: [
-    {&quot;estado&quot;: &quot;MG&quot;, &quot;qtd&quot;: 2},
-    {&quot;estado&quot;: &quot;SP&quot;, &quot;qtd&quot;: 2}
-  ],
-  &quot;por_cultura&quot;: [
-    {&quot;nome_cultura&quot;: &quot;Soja&quot;, &quot;qtd&quot;: 4},
-    {&quot;nome_cultura&quot;: &quot;Milho&quot;, &quot;qtd&quot;: 3}
-  ],
-  &quot;uso_solo&quot;: {
-    &quot;total_agricultavel&quot;: 400,
-    &quot;total_vegetacao&quot;: 200
-  }
-}
+<h3 id="dados-de-exemplo-mock">Dados de exemplo (mock)</h3>
+<p>Para facilitar testes e demonstrações, você pode popular o banco com dados fictícios (produtores, propriedades, safras e culturas válidas) usando:</p>
+<pre><code class="language-bash">python manage.py popular_mock
 </code></pre>
+<p>Esse comando garante que todos os dados respeitam as regras de negócio (CPFs/CNPJs válidos, áreas consistentes, etc).</p>
+<h3 id="rode-o-servidor-local">Rode o servidor local:</h3>
+<pre><code class="language-bash">python techagro/manage.py runserver
+</code></pre>
+<h2 id="a-api-estara-disponivel-em-httplocalhost7000v1api">A API estará disponível em <code>http://localhost:7000/v1/api/</code></h2>
+<p><a href="http://localhost:7000/v1/api/redoc/">REDOC</a> e
+<a href="http://localhost:7000/v1/api/swagger/">SWAGGER</a> para documentação automática.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../ExecLocal/" class="btn btn-neutral float-left" title="Executar via Python"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../sobre/" class="btn btn-neutral float-right" title="Sobre">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../ExecDocker/" class="btn btn-neutral float-left" title="Executar via Docker"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../playload/" class="btn btn-neutral float-right" title="Exemplo de Dados">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -188,10 +160,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../ExecLocal/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../ExecDocker/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../sobre/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../playload/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
