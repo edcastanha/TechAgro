@@ -8,6 +8,8 @@ API para Gestão de Produtores Rurais — Desafio Brain Agriculture
 ## Visão Geral
 Esta aplicação fornece uma API REST para cadastro e gestão de produtores rurais, propriedades, safras e culturas, com validações de negócio, dashboard de dados agregados e documentação automática.
 
+[Documentação - Wiki](https://edcastanha.github.io/TechAgro/home/)
+
 ## Tecnologias
 - Python 3.11+
 - Django 5
@@ -42,14 +44,8 @@ A API estará disponível em `http://localhost:8000/v1/api/`
 
 ### 5. Deploy para acesso online (Fly.io) - Primeiro acesso pode demorar ate 10s por start de pods
 
-A API está disponível publicamente em:
-- Redoc: [https://techagro.fly.dev/redoc/](https://techagro.fly.dev/redoc/)
-- Swagger: [https://techagro.fly.dev/swagger/](https://techagro.fly.dev/swagger/)
-- Endpoint base: [https://techagro.fly.dev/v1/api/](https://techagro.fly.dev/v1/api/)
 
-> **Atenção:** O primeiro acesso pode levar até 10 segundos para responder, pois o pod pode estar em cold start (inicialização automática na nuvem).
-
-## Como rodar o projeto localmente (sem Docker)
+#### Como rodar o projeto localmente (sem Docker)
 
 1. Crie e ative um ambiente virtual:
 
@@ -139,6 +135,7 @@ Pronto para deploy em qualquer nuvem (exemplo: Fly.io, Heroku, etc). Basta confi
 
 ## Autor
 Edson Bezerra
+[edcastanha](https://github.com/edcastanha)
 
 ---
 Projeto para avaliação técnica Brain Agriculture.
