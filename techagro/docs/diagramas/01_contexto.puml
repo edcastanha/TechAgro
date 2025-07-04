@@ -1,0 +1,24 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Diagrama de Contexto do Sistema - TechAgro
+
+Person(admin, "Administrador", "Gerencia todo o sistema e visualiza dashboards.")
+Person(agente_escritorio, "Agente de Escritório", "Gerencia cadastros e agendas.")
+Person(tecnico_agricola, "Técnico Agrícola (Agente de Campo)", "Usa o app para realizar os atendimentos em campo.")
+Person(produtor_rural, "Produtor Rural", "Acompanha seus dados e atendimentos.")
+
+System(techagro_sistema, "TechAgro", "Sistema de gestão de atendimentos técnicos agrícolas.")
+
+System_Ext(google_maps, "Google Maps", "API para visualização de mapas e geolocalização.")
+System_Ext(email_service, "Serviço de Email", "Envia notificações sobre agendamentos.")
+
+Rel(admin, techagro_sistema, "Usa a Interface Web")
+Rel(agente_escritorio, techagro_sistema, "Usa o App Mobile")
+Rel(tecnico_agricola, techagro_sistema, "Usa o App Mobile")
+Rel(produtor_rural, techagro_sistema, "Usa o App Mobile")
+
+Rel(techagro_sistema, google_maps, "Utiliza para exibir mapas")
+Rel(techagro_sistema, email_service, "Envia emails para")
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Diagrama de Componentes da API Backend - TechAgro
+
+Container(api, "API Backend", "Django | Python", "Fornece a lógica de negócio e os dados do sistema via API RESTful.")
+
+System_Ext(google_maps, "Google Maps", "API para visualização de mapas.")
+ContainerDb(db, "Banco de Dados", "PostgreSQL | PostGIS", "Armazena todos os dados.")
+
+Boundary(django_boundary, "Django Apps") {
+    Component(drf, "Django REST Framework", "Fornece as ferramentas para a API (Serializers, Views, Routers).")
+
+    Component(core_app, "App 'Core'", "App Django", "Gerencia usuários, perfis, autenticação e permissões.")
+    Component(produtores_app, "App 'Produtores'", "App Django", "Gerencia os dados de produtores e suas propriedades.")
+    Component(agendamentos_app, "App 'Agendamentos'", "App Django", "Gerencia o ciclo de vida dos atendimentos técnicos.")
+}
+
+Rel(drf, core_app, "Usado por")
+Rel(drf, produtores_app, "Usado por")
+Rel(drf, agendamentos_app, "Usado por")
+
+Rel(core_app, db, "Lê/Escreve perfis de usuário")
+Rel(produtores_app, db, "Lê/Escreve dados de produtores")
+Rel(agendamentos_app, db, "Lê/Escreve dados de atendimentos")
+
+Rel(agendamentos_app, produtores_app, "Usa dados de")
+Rel(agendamentos_app, core_app, "Usa dados de")
+
+Rel(agendamentos_app, google_maps, "Busca dados de geolocalização")
+
+@enduml

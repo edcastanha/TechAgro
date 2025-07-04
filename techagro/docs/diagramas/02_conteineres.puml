@@ -1,0 +1,35 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Diagrama de Contêineres do Sistema - TechAgro
+
+Person(admin, "Administrador", "Usa a Interface Web")
+Person(agente_escritorio, "Agente de Escritório", "Usa o App Mobile")
+Person(tecnico_agricola, "Técnico Agrícola", "Usa o App Mobile")
+Person(produtor_rural, "Produtor Rural", "Usa o App Mobile")
+
+System_Ext(google_maps, "Google Maps", "API para visualização de mapas.")
+System_Ext(email_service, "Serviço de Email", "Envia notificações.")
+
+System_Boundary(techagro_boundary, "Sistema TechAgro") {
+    Container(mobile_app, "Aplicativo Mobile", "Flutter | Dart", "O ponto de acesso para usuários em campo e produtores.")
+    Container(web_app, "Aplicação Web (Dashboard)", "React | TypeScript", "Interface de administração e monitoramento.")
+    
+    Container(api, "API Backend", "Django | Python", "Fornece a lógica de negócio e os dados do sistema via API RESTful.")
+    
+    ContainerDb(db, "Banco de Dados", "PostgreSQL | PostGIS", "Armazena todos os dados, incluindo informações de produtores, atendimentos e geolocalização.")
+}
+
+Rel(admin, web_app, "Usa", "HTTPS")
+Rel(agente_escritorio, mobile_app, "Usa", "HTTPS")
+Rel(tecnico_agricola, mobile_app, "Usa", "HTTPS")
+Rel(produtor_rural, mobile_app, "Usa", "HTTPS")
+
+Rel(web_app, api, "Faz chamadas de API para", "HTTPS/JSON")
+Rel(mobile_app, api, "Faz chamadas de API para", "HTTPS/JSON")
+
+Rel(api, db, "Lê e escreve em", "TCP")
+Rel(api, email_service, "Envia emails usando", "SMTP")
+Rel(api, google_maps, "Busca dados de mapas", "HTTPS")
+
+@enduml
