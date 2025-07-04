@@ -1,331 +1,77 @@
-# Casos de Teste da API
-
-Este documento contém exemplos de requisições e respostas para todos os endpoints da API.
+Vamos criar um backend com python Django Framework e DFR com Postgres para gerenciar atividades de visitas de agentes técnicos agrícolas (Agente de Campo) para produtores rurais (produtores) em suas propriedades (com dados de geolocalização).
 
 
-# Produtores
-1. Criar Produtor
-POST /produtores/
-Headers:
 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Request:
+## Do Atendimento:
 
-{
-  "documento": "12345678901",
-  "nome": "João da Silva"
-}
-Response (201 Created):
+- Cadastro de atendimento por propriedade.
 
-{
-  "id": 1,
-  "documento": "12345678901",
-  "nome": "João da Silva",
-  "propriedades": [],
-  "created_at": "2024-03-14T10:00:00",
-  "updated_at": "2024-03-14T10:00:00"
-}
-2. Listar Produtores
-GET /produtores/
-Headers:
+- - Vínculo de Propriedade
 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Response (200 OK):
-
-[
-  {
-    "id": 1,
-    "documento": "12345678901",
-    "nome": "João da Silva",
-    "propriedades": [
-      {
-        "id": 1,
-        "nome": "Fazenda São João",
-        "cidade": "São Paulo",
-        "estado": "SP",
-        "area_total": 1000.0,
-        "area_agricultavel": 700.0,
-        "area_vegetacao": 300.0,
-        "produtor_id": 1,
-        "culturas": [
-          {
-            "id": 1,
-            "nome": "Soja",
-            "ano_safra": 2024,
-            "area": 500.0,
-            "propriedade_id": 1,
-            "created_at": "2024-03-14T10:00:00",
-            "updated_at": "2024-03-14T10:00:00"
-          }
-        ],
-        "created_at": "2024-03-14T10:00:00",
-        "updated_at": "2024-03-14T10:00:00"
-      }
-    ],
-    "created_at": "2024-03-14T10:00:00",
-    "updated_at": "2024-03-14T10:00:00"
-  }
-]
-3. Obter Produtor
-GET /produtores/{produtor_id}
-Headers:
-
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Response (200 OK):
-
-{
-  "id": 1,
-  "documento": "12345678901",
-  "nome": "João da Silva",
-  "propriedades": [
-    {
-      "id": 1,
-      "nome": "Fazenda São João",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "area_total": 1000.0,
-      "area_agricultavel": 700.0,
-      "area_vegetacao": 300.0,
-      "produtor_id": 1,
-      "culturas": [
-        {
-          "id": 1,
-          "nome": "Soja",
-          "ano_safra": 2024,
-          "area": 500.0,
-          "propriedade_id": 1,
-          "created_at": "2024-03-14T10:00:00",
-          "updated_at": "2024-03-14T10:00:00"
-        }
-      ],
-      "created_at": "2024-03-14T10:00:00",
-      "updated_at": "2024-03-14T10:00:00"
-    }
-  ],
-  "created_at": "2024-03-14T10:00:00",
-  "updated_at": "2024-03-14T10:00:00"
-}
-4. Atualizar Produtor
-PUT /produtores/{produtor_id}
-Headers:
-
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Request:
-
-{
-  "documento": "12345678901",
-  "nome": "João da Silva Atualizado"
-}
-Response (200 OK):
-
-{
-  "id": 1,
-  "documento": "12345678901",
-  "nome": "João da Silva Atualizado",
-  "propriedades": [
-    {
-      "id": 1,
-      "nome": "Fazenda São João",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "area_total": 1000.0,
-      "area_agricultavel": 700.0,
-      "area_vegetacao": 300.0,
-      "produtor_id": 1,
-      "culturas": [
-        {
-          "id": 1,
-          "nome": "Soja",
-          "ano_safra": 2024,
-          "area": 500.0,
-          "propriedade_id": 1,
-          "created_at": "2024-03-14T10:00:00",
-          "updated_at": "2024-03-14T10:00:00"
-        }
-      ],
-      "created_at": "2024-03-14T10:00:00",
-      "updated_at": "2024-03-14T10:00:00"
-    }
-  ],
-  "created_at": "2024-03-14T10:00:00",
-  "updated_at": "2024-03-14T10:00:00"
-}
-5. Deletar Produtor
-DELETE /produtores/{produtor_id}
-Headers:
-
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Response (200 OK):
-
-{
-  "message": "Produtor deletado com sucesso"
-}
+- - Data de atendimento
 
 
-# Propriedades
-1. Adicionar Propriedade
-POST /produtores/{produtor_id}/propriedades
-Headers:
 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Request:
+- Receberemos dados de check-in de atendimento
 
-{
-  "nome": "Fazenda São João",
-  "cidade": "São Paulo",
-  "estado": "SP",
-  "area_total": 1000.0,
-  "area_agricultavel": 700.0,
-  "area_vegetacao": 300.0
-}
-Response (201 Created):
+- - Dados de horas de chegada.
 
-{
-  "id": 1,
-  "nome": "Fazenda São João",
-  "cidade": "São Paulo",
-  "estado": "SP",
-  "area_total": 1000.0,
-  "area_agricultavel": 700.0,
-  "area_vegetacao": 300.0,
-  "produtor_id": 1,
-  "culturas": [],
-  "created_at": "2024-03-14T10:00:00",
-  "updated_at": "2024-03-14T10:00:00"
-}
+- - Inicialização de atendimento.
 
-# Culturas
-1. Adicionar Cultura
-POST /produtores/{produtor_id}/propriedades/{propriedade_id}/culturas
-Headers:
-
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Request:
-
-{
-  "nome": "Soja",
-  "ano_safra": 2024,
-  "area": 500.0
-}
-Response (201 Created):
-
-{
-  "id": 1,
-  "nome": "Soja",
-  "ano_safra": 2024,
-  "area": 500.0,
-  "propriedade_id": 1,
-  "created_at": "2024-03-14T10:00:00",
-  "updated_at": "2024-03-14T10:00:00"
-}
+- - Geolocalização do técnico para atendimento.
 
 
-# Dashboard
-1. Obter Resumo
-GET /dashboard/resumo
-Headers:
 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Response (200 OK):
+- Atividades
 
-{
-  "total_propriedades": 1,
-  "area_total_hectares": 1000.0,
-  "distribuicao_estados": {
-    "SP": 1
-  },
-  "distribuicao_culturas": {
-    "Soja": 500.0
-  },
-  "distribuicao_uso_solo": {
-    "area_agricultavel": 700.0,
-    "area_vegetacao": 300.0
-  }
-}
-
-# Health Check
-1. Verificar Status
-GET /health
-Response (200 OK):
-
-{
-  "status": "healthy",
-  "version": "1.0.0",
-  "timestamp": "2024-03-14T10:00:00"
-}
-
-# Códigos de Erro
-1. Bad Request (400)
-{
-  "detail": "Documento deve ter 11 dígitos"
-}
-2. Unauthorized (401)
-{
-  "detail": "Could not validate credentials"
-}
-3. Forbidden (403)
-{
-  "detail": "Not enough permissions"
-}
-4. Not Found (404)
-{
-  "detail": "Produtor não encontrado"
-}
-5. Unprocessable Entity (422)
-{
-  "detail": [
-    {
-      "loc": ["body", "email"],
-      "msg": "invalid email address",
-      "type": "value_error.email"
-    }
-  ]
-}
-6. Internal Server Error (500)
-{
-  "detail": "Internal server error"
-}
+- - Tipo de ações ou orientações para com o produtor
 
 
-# Autenticação
-1. Registrar Usuário
-POST /auth/register
-Request:
 
-{
-  "email": "teste@exemplo.com",
-  "password": "senha123"
-}
-Response (200 OK):
+----
 
-{
-  "id": 1,
-  "email": "teste@exemplo.com",
-  "is_active": true,
-  "created_at": "2024-03-14T10:00:00"
-}
-2. Login
-POST /auth/token
-Request (form-data):
+1 - Crie as ADRs para documentar
 
-username: teste@exemplo.com
-password: senha123
-Response (200 OK):
+2 - Crie os Diagramas plantUML C4 Model do projeto
 
-{
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "token_type": "bearer"
-}
-3. Obter Usuário Atual
-GET /auth/me
-Headers:
+3 - Modelos das classes Model para Django
 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Response (200 OK):
 
-{
-  "id": 1,
-  "email": "teste@exemplo.com",
-  "is_active": true,
-  "created_at": "2024-03-14T10:00:00"
-}
+Pelo que entendi, nosso objetivo é desenvolver um backend robusto usando Django e Django REST Framework (DRF), com PostgreSQL como banco de dados. O sistema deverá gerenciar atendimentos, incluindo o registro de visitas a propriedades rurais, dados de check-in com geolocalização e o detalhamento das atividades realizadas.
+
+Para começarmos com o pé direito, vamos seguir as etapas que você propôs:
+
+Entendendo o seu Objetivo
+Para garantir que entendi perfeitamente o escopo e as suas expectativas, gostaria de fazer algumas perguntas:
+
+Tipos de Usuário: Teremos diferentes perfis de usuário, como "Agente de Campo" e "Produtor Rural"? Se sim, eles terão acesso a funcionalidades diferentes no sistema?
+
+Dados do Produtor e da Propriedade: Além do nome e geolocalização da propriedade, quais outras informações você gostaria de armazenar sobre o produtor rural e suas propriedades? (Ex: CPF/CNPJ, contato, tipo de cultura, etc.)
+
+Detalhes do Atendimento: O que exatamente você espera registrar como "Tipo de ações ou orientações para com o produtor"? Seria um campo de texto livre, ou teremos tipos pré-definidos de atividades (ex: "Orientação sobre pragas", "Análise de solo", "Recomendação de insumos")?
+
+Check-in/Check-out: Você mencionou "horas de chegada" e "inicialização de atendimento". Haverá também um "check-out" ou "finalização de atendimento" com registro de horas de saída? A geolocalização será registrada apenas no check-in, ou em múltiplos momentos durante o atendimento?
+
+Acesso e Integração: Este backend será consumido por qual tipo de aplicação? (Ex: um aplicativo mobile para os agentes de campo, um dashboard web para a gestão?)
+
+Todo os usuários herdaram de uma classe pessoa com dados convencionas de uma pessoa brasileira.
+
+
+
+Detalhes do Atendimento: Criaremos um formulário base com os dados da propriedade e responsável e campos de tipo de atividade, horários e anotações e atividade de retorno.
+
+Acesso e Integração: O Agente Agricola, Produtor, Escritório por meio App Mobile.
+
+Ja Administradores via Web e Dashboard de monitoramento.
+
+1 - Tipos de Usuario:
+
+1.1 - Administradores = Gerencia e visualizadas todos os dados
+
+1.2 - Agente de escritório = Cadastra, Edita e Desativa cadastros de produtores, propriedades e técnicos de campo, Cria atividades e edita agendas de técnicos de campo.
+
+1.3 - Produtor Rural = Visualiza dados de usas propriedades e atendimentos realizados e agendados.
+
+1.4 - Tecnico Agrícola - Organiza os agendamentos por datas e horários, realiza check-in na propriedade, realiza check-out com cadastro de atividades realizadas, cria notas de atendimento e retorno para próxima visita.
+
+campos para recebimento de geolocalização em cada etapa do atendimento (check-in, início atendimento, anotações, check-out)
