@@ -3,123 +3,11 @@ import uuid
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
-from .validators import validate_cpf, validate_cnpj, validate_areas_propriedade
+from core.validators import validate_areas_propriedade
+from core.models import ProdutorRural, Endereco
+from core.base import BaseModel
 
-class BaseModel(models.Model):
-    """
-    Classe base para modelos, pode ser usada para adicionar campos comuns no futuro.
-    """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True, help_text="Data e hora de criação do registro.")
-    updated_at = models.DateTimeField(auto_now=True, help_text="Data e hora da última atualização do registro.")
-    class Meta:
-        abstract = True
-
-class Endereco(models.Model):
-    """
-    Modelo abstrato para representar um endereço detalhado.
-    """
-    cep = models.CharField(
-        max_length=9, blank=True, null=True,
-        help_text="CEP da propriedade (opcional)."
-    )
-    logradouro = models.CharField(
-        max_length=255, blank=True, null=True,
-        help_text="Rua, avenida, estrada etc. (opcional)."
-    )
-    numero = models.CharField(
-        max_length=10, blank=True, null=True,
-        help_text="Número do imóvel (opcional)."
-    )
-    complemento = models.CharField(
-        max_length=100, blank=True, null=True,
-        help_text="Complemento do endereço (ex: Lote 12, Fundos) (opcional)."
-    )
-    bairro = models.CharField(
-        max_length=100, blank=True, null=True,
-        help_text="Bairro onde a Propriedade está localizada (opcional)."
-    )
-    cidade = models.CharField(
-        max_length=100,
-        help_text="Cidade onde a Propriedade está localizada."
-    )
-    estado = models.CharField(
-        max_length=2,
-        help_text="Sigla do estado (UF) onde a Propriedade está localizada."
-    )
-    latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True,
-        validators=[MinValueValidator(-90), MaxValueValidator(90)],
-        help_text="Latitude da propriedade (ex: -23.55052)."
-    )
-    longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True,
-        validators=[MinValueValidator(-180), MaxValueValidator(180)],
-        help_text="Longitude da propriedade (ex: -46.63330)."
-    )
-    class Meta:
-        abstract = True
-
-class Produtor(BaseModel):
-    """
-    Modelo para representar um Produtor Rural. Pode ser uma pessoa física (CPF)
-    ou jurídica (CNPJ). O tipo de documento é inferido e validado.
-    """
-    TIPO_DOCUMENTO_CHOICES = [
-        ('CPF', 'CPF'),
-        ('CNPJ', 'CNPJ'),
-    ]
-
-    documento = models.CharField(
-        max_length=18, # Suficiente para CPF e CNPJ com máscaras (e.g., 999.999.999-99)
-        unique=True,
-        help_text="CPF (11 dígitos) ou CNPJ (14 dígitos). Somente números, ou com máscara."
-    )
-    tipo_documento = models.CharField(
-        max_length=4,
-        choices=TIPO_DOCUMENTO_CHOICES,
-        help_text="Tipo de documento (CPF ou CNPJ), inferido automaticamente."
-    )
-    nome = models.CharField(
-        max_length=255,
-        help_text="Nome completo do produtor ou razão social da empresa."
-    )
-
-    class Meta:
-        verbose_name = "Produtor Rural"
-        verbose_name_plural = "Produtores Rurais"
-        ordering = ['nome']
-
-    def clean(self):
-        """
-        Valida o documento e infere o tipo (CPF/CNPJ) baseado no número de dígitos.
-        """
-        cleaned_document = re.sub(r'[^0-9]', '', self.documento) # Remove caracteres não numéricos
-
-        if len(cleaned_document) == 11:
-            self.tipo_documento = 'CPF'
-            validate_cpf(cleaned_document)
-        elif len(cleaned_document) == 14:
-            self.tipo_documento = 'CNPJ'
-            validate_cnpj(cleaned_document)
-        else:
-            raise ValidationError({
-                'documento': 'Documento deve ter 11 dígitos (CPF) ou 14 dígitos (CNPJ).'
-            })
-
-    def save(self, *args, **kwargs):
-        """
-        Sobrescreve o método save para garantir que clean() seja chamado.
-        Em formulários e admin, clean() é chamado automaticamente.
-        Para saves diretos (ex: shell), é bom garantir.
-        """
-        self.clean()
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.nome
-
-class Propriedade(Endereco, BaseModel):
+class Propriedade(BaseModel):
     """
     Modelo para representar uma Propriedade (Propriedade Rural) pertencente a um produtor,
     agora com endereço detalhado e tipo de atividade.
@@ -132,10 +20,16 @@ class Propriedade(Endereco, BaseModel):
     ]
 
     produtor = models.ForeignKey(
-        Produtor,
+        ProdutorRural,
         on_delete=models.CASCADE,
         related_name='propriedades',
         help_text="Produtor rural responsável por esta Propriedade."
+    )
+    endereco = models.OneToOneField(
+        Endereco,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        help_text="Endereço da propriedade."
     )
     nome_propriedade = models.CharField(
         max_length=255,
@@ -184,7 +78,7 @@ class Propriedade(Endereco, BaseModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.nome_propriedade} ({self.cidade}/{self.estado}) - Produtor: {self.produtor.nome}"
+        return f"{self.nome_propriedade} ({self.endereco.cidade}/{self.endereco.estado}) - Produtor: {self.produtor.nome}"
 
 class Safra(BaseModel):
     """

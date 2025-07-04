@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Produtor, Propriedade, Safra, AtividadeRural
+from .models import Propriedade, Safra, AtividadeRural
 
 class AtividadeRuralSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,9 +20,4 @@ class PropriedadeSerializer(serializers.ModelSerializer):
         model = Propriedade
         fields = '__all__'
 
-class ProdutorSerializer(serializers.ModelSerializer):
-    Propriedades = PropriedadeSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Produtor
-        fields = '__all__'
+ 

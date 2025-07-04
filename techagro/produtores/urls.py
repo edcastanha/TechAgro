@@ -1,7 +1,6 @@
 from rest_framework import routers
 from django.urls import path
 from .views import (
-    ProdutorViewSet,
     PropriedadeViewSet,
     SafraViewSet,
     AtividadeRuralViewSet
@@ -9,7 +8,6 @@ from .views import (
 from .dashboard import DashboardView
 
 router = routers.DefaultRouter()
-router.register(r'produtores', ProdutorViewSet)
 router.register(r'propriedades', PropriedadeViewSet)
 router.register(r'safras', SafraViewSet)
 router.register(r'atividades', AtividadeRuralViewSet)

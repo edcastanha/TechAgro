@@ -1,7 +1,6 @@
 from rest_framework import viewsets
-from .models import Produtor, Propriedade, Safra, AtividadeRural
+from .models import Propriedade, Safra, AtividadeRural
 from .serializers import (
-    ProdutorSerializer,
     PropriedadeSerializer,
     SafraSerializer,
     AtividadeRuralSerializer
@@ -11,34 +10,6 @@ from helpers.logging_helper import get_logger
 logger = get_logger()
 
 # Create your views here.
-
-class ProdutorViewSet(viewsets.ModelViewSet):
-    queryset = Produtor.objects.all()
-    serializer_class = ProdutorSerializer
-
-    def perform_create(self, serializer):
-        try:
-            instance = serializer.save()
-            logger.info(f"Produtor criado: {instance.nome} (ID: {instance.id})")
-        except Exception as e:
-            logger.error(f"Erro ao criar produtor: {e}")
-            raise
-
-    def perform_update(self, serializer):
-        try:
-            instance = serializer.save()
-            logger.info(f"Produtor atualizado: {instance.nome} (ID: {instance.id})")
-        except Exception as e:
-            logger.error(f"Erro ao atualizar produtor: {e}")
-            raise
-
-    def perform_destroy(self, instance):
-        try:
-            logger.info(f"Produtor removido: {instance.nome} (ID: {instance.id})")
-            instance.delete()
-        except Exception as e:
-            logger.error(f"Erro ao remover produtor: {e}")
-            raise
 
 class PropriedadeViewSet(viewsets.ModelViewSet):
     queryset = Propriedade.objects.all()

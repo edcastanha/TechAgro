@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
-from produtores.models import Produtor, Propriedade, Safra, AtividadeRural
+from produtores.models import Propriedade, Safra, AtividadeRural
+from core.models import ProdutorRural, Endereco
 from random import randint, choice
 from datetime import date
 
@@ -11,7 +12,8 @@ class Command(BaseCommand):
         AtividadeRural.objects.all().delete()
         Safra.objects.all().delete()
         Propriedade.objects.all().delete()
-        Produtor.objects.all().delete()
+        ProdutorRural.objects.all().delete()
+        Endereco.objects.all().delete()
 
         self.stdout.write(self.style.SUCCESS('Criando produtores...'))
         produtores = []
@@ -28,14 +30,16 @@ class Command(BaseCommand):
         ]
         for i in range(3):
             if i % 2 == 0:
-                produtor = Produtor.objects.create(
+                produtor = ProdutorRural.objects.create(
                     documento=cpfs_validos[i],
-                    nome=f'Produtor {i+1} (CPF)'
+                    nome=f'Produtor {i+1} (CPF)',
+                    email=f'produtor{i+1}@example.com'
                 )
             else:
-                produtor = Produtor.objects.create(
+                produtor = ProdutorRural.objects.create(
                     documento=cnpjs_validos[i],
-                    nome=f'Produtor {i+1} (CNPJ)'
+                    nome=f'Produtor {i+1} (CNPJ)',
+                    email=f'produtor{i+1}@example.com'
                 )
             produtores.append(produtor)
 
@@ -55,14 +59,19 @@ class Command(BaseCommand):
                 # Garantir a soma das áreas
                 if area_agricultavel + area_vegetacao > area_total:
                     area_vegetacao = area_total - area_agricultavel
+                
+                endereco = Endereco.objects.create(
+                    cidade=cidade,
+                    estado=estado
+                )
+
                 prop = Propriedade.objects.create(
                     produtor=produtor,
+                    endereco=endereco,
                     nome_propriedade=f'Fazenda {i+1}-{j+1}',
                     area_total_hectares=area_total,
                     area_agricultavel_hectares=area_agricultavel,
-                    area_vegetacao_hectares=area_vegetacao,
-                    cidade=cidade,
-                    estado=estado
+                    area_vegetacao_hectares=area_vegetacao
                 )
                 propriedades.append(prop)
 
