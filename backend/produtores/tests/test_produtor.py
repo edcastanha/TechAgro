@@ -1,6 +1,6 @@
 import pytest
 from django.core.exceptions import ValidationError
-from techagro.produtores.models import Produtor
+from backend.produtores.models import Produtor
 
 def test_produtor_cpf_valido(db):
     produtor = Produtor(documento='12345678909', nome='Produtor Teste')

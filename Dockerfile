@@ -16,11 +16,11 @@ RUN mkdir -p /code
 WORKDIR /code
 
 RUN pip install poetry
-COPY pyproject.toml poetry.lock ./
+COPY ./backend/pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false
 RUN poetry install --only main --no-root --no-interaction
-COPY ./techagro ./
+COPY ./backend ./
 
-EXPOSE 8000
+EXPOSE 8080
 
 CMD ["gunicorn","--bind",":8000","--workers","1","config.wsgi"]
