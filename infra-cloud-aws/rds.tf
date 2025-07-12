@@ -59,7 +59,7 @@ resource "aws_db_instance" "main" {
   password               = random_password.db_password.result
   db_subnet_group_name   = aws_db_subnet_group.default.name
   vpc_security_group_ids = [aws_security_group.db.id]
-  skip_final_snapshot    = true # Para dev/teste. Mudar para false em produção.
+  skip_final_snapshot    = var.environment == "prod" ? false : true
 
   tags = {
     Environment = var.environment

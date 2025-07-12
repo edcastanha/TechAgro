@@ -208,16 +208,6 @@ resource "aws_ecs_task_definition" "api" {
           protocol      = "tcp"
         },
       ]
-      environment = [
-        {
-          name  = "DJANGO_SETTINGS_MODULE"
-          value = "framework.config.settings"
-        },
-        {
-          name  = "DATABASE_URL"
-          value = "postgresql://${var.db_username}:${random_password.db_password.result}@${aws_db_instance.main.address}:${aws_db_instance.main.port}/${var.db_name}"
-        }
-      ]
       secrets = [
         {
           name      = "DB_PASSWORD"
