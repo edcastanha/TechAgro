@@ -35,17 +35,17 @@ jobs:
         with:
           terraform_version: 1.8.3
 
-      - name: Configure AWS credentials
+      - name: Configura credencias AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ inputs.aws-assume-role-arn }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ inputs.aws-region }}
 
-      - name: Read destroy configuration
+      - name: Verifica se Destroy igual a TRUE
         id: read-destroy-config
         run: |
-          DESTROY="$(jq -r '.${{ inputs.environment }}' ./infra/destroy_config.json)"
+          DESTROY="$(jq -r '.${{ inputs.environment }}' ./infra-cloud-aws/destroy_config.json)"
           echo "destroy=$(echo $DESTROY)" >> $GITHUB_OUTPUT
 
       - name: Terraform Init
