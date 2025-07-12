@@ -13,10 +13,10 @@ permissions:
 
 jobs:
   terraform:
-    uses: ./.github/workflow/terraform.yml
+    uses: ./.github/workflows/terraform.yml
     with:
       environment: "develop"
       aws-assume-role-arn: "arn:aws:iam::104976232069:role/github-action-edcastanha-pipeline"
       aws-region: "sa-east-1"
       aws-statefile-s3-bucket: "edcastanha-sa-east-1-statefile"
-      aws-lock-dynamodb-table:"edcastanha-sa-east-1-terraform-lock"
+      aws-lock-dynamodb-table: "edcastanha-sa-east-1-terraform-lock"
