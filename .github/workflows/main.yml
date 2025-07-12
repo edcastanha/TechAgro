@@ -1,9 +1,9 @@
-name: "DEV DEPLOY"
+name: "PROD DEPLOY"
 
 on:
   push:
     branches:
-      - develop
+      - main
 
 # Conforme docs da AWS - nivel de permissoes de trabalho do workflow (ASSUME-ROLE)
 permissions:
@@ -15,7 +15,7 @@ jobs:
   terraform:
     uses: ./.github/workflows/terraform.yml
     with:
-      environment: dev
+      environment: prod
       aws-assume-role-arn: "arn:aws:iam::104976232069:role/github-action-edcastanha-pipeline"
       aws-region: "sa-east-1"
       aws-statefile-s3-bucket: "edcastanha-sa-east-1-statefile"
