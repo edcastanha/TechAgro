@@ -1,1 +1,1 @@
-bucket_name="dev-sa-east-1-app-tech=agro"
+bucket_name="dev-sa-east-1-app-tech-agro"

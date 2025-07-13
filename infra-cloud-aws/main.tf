@@ -1,14 +1,7 @@
-# Repositório para armazenar a imagem Docker da aplicação
-resource "aws_ecr_repository" "api" {
-  name                 = "${var.environment}-techagro-api"
-  image_tag_mutability = "MUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-
+resource "aws_s3_bucket" "bucket" {
+  bucket = var.bucket_name
   tags = {
-    Environment = var.environment
+    Environment = var.bucket_name
     Project     = "TechAgro"
   }
 }
