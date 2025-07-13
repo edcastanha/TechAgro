@@ -23,7 +23,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='../site/index.html'), name='home'),
     path('admin/', admin.site.urls),
     path('v1/api/', include('produtores.urls')),
-    path('schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('v1/api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('v1/api/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('v1/api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
