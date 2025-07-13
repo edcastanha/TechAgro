@@ -20,6 +20,28 @@ Esta aplicação fornece uma API REST para cadastro e gestão de produtores rura
 - drf-spectacular (OpenAPI/Swagger)
 - MkDocs (para documentação)
 
+## Arquitetura da Solução
+
+A aplicação segue uma arquitetura em camadas, containerizada para garantir portabilidade e escalabilidade. O diagrama abaixo ilustra os principais componentes e o fluxo de requisições:
+
+```mermaid
+graph TD
+    subgraph "Infraestrutura (Docker)"
+        A[Usuário/Cliente API] --> B{Nginx};
+        B -- /v1/api/ --> C[API Django];
+        C <--> D[PostgreSQL];
+    end
+
+    subgraph "Aplicação Django"
+        C --> E[Views/Serializers];
+        E --> F[Models/Validators];
+        F --> D;
+    end
+
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#ccf,stroke:#333,stroke-width:2px
+```
+
 
 ## Executando o Projeto via Docker e Docker Compose
 [Página sobre execução via Docker](https://edcastanha.github.io/TechAgro/ExecDocker/)
@@ -67,4 +89,3 @@ Edson Bezerra
 
 ---
 Projeto para avaliação técnic.a, não é um produto finalizado. Sinta-se à vontade para contribuir ou sugerir melhorias!
-
