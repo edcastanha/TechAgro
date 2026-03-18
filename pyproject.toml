@@ -28,7 +28,7 @@ pytest-django = "^4.8"
 pytest-asyncio = "^0.23"
 pytest-mock = "^3.12"
 ruff = "^0.4"
-black = "^24.4"
+black = "^26.3"
 mypy = "^1.10"
 pytest-cov = "^6.2.1"
 
